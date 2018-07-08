@@ -9,13 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "CodeTeleportClient/ViewController.m"
-            timestampString = "552547916.377481"
+            filePath = "CodeTeleportClient/AppDelegate.m"
+            timestampString = "552749078.844198"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "96"
-            endingLineNumber = "96"
-            landmarkName = "-dealloc"
+            startingLineNumber = "41"
+            endingLineNumber = "41"
+            landmarkName = "-application:handleOpenURL:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -25,13 +25,29 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "CodeTeleportClient/AppDelegate.m"
-            timestampString = "552547916.377578"
+            filePath = "CTClient/Sources/NewLoader.m"
+            timestampString = "552749078.844453"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "55"
-            endingLineNumber = "55"
-            landmarkName = "-application:handleOpenURL:"
+            startingLineNumber = "154"
+            endingLineNumber = "154"
+            landmarkName = "+patchInitForClass:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CTClient/Sources/CodeTeleportLoader.m"
+            timestampString = "552749078.844643"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "104"
+            endingLineNumber = "104"
+            landmarkName = "+patchInitForClass:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

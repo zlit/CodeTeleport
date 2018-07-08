@@ -24,20 +24,6 @@
     NSLog(@"%@",clientBundlePath);
     [[NSBundle bundleWithPath:clientBundlePath] load];
     
-    CGFloat time = 0;
-    
-    for(int k=0;k<20;k++){
-        CFAbsoluteTime start = CFAbsoluteTimeGetCurrent();
-        for(int i=0;i<10000;i++){
-            @autoreleasepool{
-                TestOBJ *obj = [[TestOBJ alloc] init];
-            }
-        }
-        CFAbsoluteTime end = CFAbsoluteTimeGetCurrent();
-        time += (end - start);
-        NSLog(@"------- %d : %f",k, (end - start));
-    }
-    NSLog(@"average time : %lf",time/20);
     ViewController *vc = [[ViewController alloc] init];
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
