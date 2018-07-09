@@ -55,7 +55,7 @@ static void *dylibHandle;
             //所以类方法的数据结构其实是在metaclass的,即object_getClass(class.self)
             //这里有一点不明白的地方是,class.self和class有什么区别.
             //这里传入class,获取不到method,只有class.self可以.两者对应的指针是相同的.
-            [CodeTeleportLoader replaceMethodFrom:[class class]
+            [CodeTeleportLoader replaceMethodFrom:class.self
                                 toClass:oldClass];
             [CodeTeleportLoader replaceMethodFrom:object_getClass(class.self)
                                 toClass:object_getClass(oldClass)];
@@ -83,21 +83,13 @@ static void *dylibHandle;
 
 +(void)patchInitForClass:(Class)class
 {
-    // get class orginalInit imp and  self codeteleport_add_init imp
+    // get class orginalInit imp
     SEL initSelector = @selector(init);
     Method initMethod = class_getInstanceMethod(class, initSelector);
-    Method addInitMethod = class_getInstanceMethod([self class], @selector(codeteleport_add_init));
-    IMP addIMP = method_getImplementation(addInitMethod);
-    
-    // try to add init method
-    BOOL addInit = class_addMethod(class, initSelector, addIMP, method_getTypeEncoding(initMethod));
-    if (addInit == YES) {
-        CTLog(@"patched by addInit: %@", [self dumpClass:class]);
-        return;
-    }
-    
-    // otherwise add patchInitMethod method
+    // if class implement initSelector, orginalInitIMP is [class init]
+    // Otherwise orginalInitIMP is [super init]
     IMP orginalInitIMP = method_getImplementation(initMethod);
+    
     // using block implemetation can hold origin init implementation, for later use
     IMP patchInitIMP = imp_implementationWithBlock(^id(id SELF, SEL selector){
         NSString *classSymbolName = [NSString stringWithFormat:@"OBJC_CLASS_$_%@", [SELF class]];
@@ -109,9 +101,19 @@ static void *dylibHandle;
         return ((id(*)(id, SEL))orginalInitIMP)(SELF, selector);
     });
     
+    // try to add init method
+    // if class implement initSelector, addPatchInit = NO
+    // Otherwise addPatchInit = YES
+    BOOL addPatchInit = class_addMethod(class, initSelector, patchInitIMP, method_getTypeEncoding(initMethod));
+    if (addPatchInit == YES) {
+        CTLog(@"patched by addInit: %@", [self dumpClass:class]);
+        return;
+    }
+    
+    // otherwise add patchInitMethod method
     SEL patchInitSelector = @selector(codeteleport_patch_init);
     Method patchInitMethod = class_getInstanceMethod([self class], patchInitSelector);
-    BOOL addPatchInit = class_addMethod(class, patchInitSelector, patchInitIMP, method_getTypeEncoding(patchInitMethod));
+    addPatchInit = class_addMethod(class, patchInitSelector, patchInitIMP, method_getTypeEncoding(patchInitMethod));
     if (addPatchInit == NO) {
         CTLog(@"[WARNING] patch failed for class: %@", [self dumpClass:class]);
         return;
@@ -130,20 +132,13 @@ static void *dylibHandle;
 
 - (id)codeteleport_add_init
 {
-    NSString *classSymbolName = [NSString stringWithFormat:@"OBJC_CLASS_$_%@", [self class]];
-    Class dylibClass = (__bridge Class)dlsym(dylibHandle, classSymbolName.UTF8String);
-    Class currentClass = [self class];
-    if (dylibClass && dylibClass != currentClass) {
-        object_setClass(self, dylibClass);
-    }
-    
-    // because this is an added init, just call [super init];
-    return [super init];
+    CTLogAssertNO(@"This method can not be called, maybe something wrong.");
+    return nil;
 }
 
 - (id)codeteleport_patch_init
 {
-    CTLog(@"This method can not be called, maybe something wrong.");
+    CTLogAssertNO(@"This method can not be called, maybe something wrong.");
     return nil;
 }
 

@@ -11,6 +11,10 @@
 #define CTLog(fmt, ...) \
 NSLog((@"[CodeTeleportClient] " fmt), ##__VA_ARGS__); \
 
+#define CTLogAssertNO(fmt, ...) \
+CTLog(fmt, ##__VA_ARGS__); \
+NSAssert(NO, fmt, ##__VA_ARGS__);\
+
 #define kCodeTeleportCompletedNotification @"kCodeTeleportCompletedNotification"
 
 #define CTError(fmt, ...)\
