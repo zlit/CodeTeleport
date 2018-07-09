@@ -40,9 +40,6 @@
     }
 }
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wundeclared-selector"
-
 - (id)codeteleport_init
 {
     id instance = [self codeteleport_init];

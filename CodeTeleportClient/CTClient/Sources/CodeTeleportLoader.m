@@ -47,14 +47,9 @@ static void *dylibHandle;
         Class class = (__bridge Class)(dlsym(dylibHandle, class_symbol_name));
         if (class) {
             Class oldClass = NSClassFromString(className);
-            
+            //patch init to set newClass when new a object
             [CodeTeleportLoader patchInitForClass:class];
-            
-            //class->对象的类,class也是对象(类对象),class类对象的对应的类就是metaclass.
-            // object_getClass 实现是 return isa; class.isa,指向的类,就是metaclass
-            //所以类方法的数据结构其实是在metaclass的,即object_getClass(class.self)
-            //这里有一点不明白的地方是,class.self和class有什么区别.
-            //这里传入class,获取不到method,只有class.self可以.两者对应的指针是相同的.
+            //replace  oldClass method with new method,make oldObj can invoke them.
             [CodeTeleportLoader replaceMethodFrom:class.self
                                 toClass:oldClass];
             [CodeTeleportLoader replaceMethodFrom:object_getClass(class.self)
