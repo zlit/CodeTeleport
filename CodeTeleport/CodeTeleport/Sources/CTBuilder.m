@@ -121,9 +121,8 @@ static int kThreadIndex = 1;
         }
         
         CTLog(@"start buildModifyFiles,path :%@",weakSelf.buildTaskPath);
-        
-        [weakSelf compileModifyFiles];
         CTLog(@"_waitingForTeleport : %@",weakSelf.waitingForTeleport);
+        [weakSelf compileModifyFiles];
     });
 }
 
@@ -197,6 +196,8 @@ static int kThreadIndex = 1;
     if(self.buildCompletedBlock){
         NSString *dylibInfo = [_dylibPath stringByAppendingFormat:@"#%@",[compileFileNameList componentsJoinedByString:@"|"]];
         self.buildCompletedBlock(self,dylibInfo);
+        [self.waitingForTeleport removeAllObjects];
+        CTLog(@"buildCompleted,clean waitingForTeleport files");
     }
 }
 

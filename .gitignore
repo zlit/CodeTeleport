@@ -1,8 +1,4 @@
 
-CodeTeleport/.DS_Store
-CodeTeleport/CodeTeleport.xcodeproj/project.xcworkspace/xcuserdata/zhaolei.xcuserdatad/UserInterfaceState.xcuserstate
-CodeTeleportClient/.DS_Store
-CodeTeleport/CodeTeleport.xcodeproj/project.xcworkspace/xcuserdata/zhaolei.xcuserdatad/UserInterfaceState.xcuserstate
-CodeTeleportClient/.DS_Store
-CodeTeleportClient/CodeTeleportClient.xcodeproj/xcuserdata/zhaolei.xcuserdatad/xcdebugger/Breakpoints_v2.xcbkptlist
 *.xcuserstate
+*.DS_Store
+*.xcbkptlist

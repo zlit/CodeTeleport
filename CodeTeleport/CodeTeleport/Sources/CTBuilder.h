@@ -8,8 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-#define kTmpPath @"/tmp/CodeTeleport"
-#define kBuildTaskPathPre @"/tmp/CodeTeleport/BuildTask"
+#define kTmpPath @"/tmp/com.zhaolei.CodeTeleport"
+#define kBuildTaskPathPre @"/tmp/com.zhaolei.CodeTeleport/BuildTask"
 
 @class CTBuilder;
 

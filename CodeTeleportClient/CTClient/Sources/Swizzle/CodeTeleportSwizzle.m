@@ -42,7 +42,13 @@
 
 - (id)codeteleport_init
 {
-    id instance = [self codeteleport_init];
+    id instance;
+    if ([self respondsToSelector:@selector(codeteleport_init)]) {
+        instance = [self codeteleport_init];
+    } else {
+        instance = [self init];
+    }
+    
     if([instance respondsToSelector:@selector(codeteleport_completed)]){
         [[NSNotificationCenter defaultCenter] addObserver:instance selector:@selector(codeteleport_completed) name:kCodeTeleportCompletedNotification object:nil];
     }

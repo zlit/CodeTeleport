@@ -27,7 +27,7 @@ static void *dylibHandle;
     // dispatch to main thread, because maybe class +load +initialize require;
     const char *dylibCString = [path cStringUsingEncoding:NSUTF8StringEncoding];
 
-    dylibHandle = dlopen(dylibCString, RTLD_NOW);
+    dylibHandle = dlopen(dylibCString, RTLD_NOW | RTLD_GLOBAL);
     
     if (dylibHandle == NULL) {
         *error = CTError(@"open dylib error: %s.", dlerror());
@@ -49,11 +49,7 @@ static void *dylibHandle;
             Class oldClass = NSClassFromString(className);
             //patch init to set newClass when new a object
             [CodeTeleportLoader patchInitForClass:class];
-            //replace  oldClass method with new method,make oldObj can invoke them.
-            [CodeTeleportLoader replaceMethodFrom:class.self
-                                toClass:oldClass];
-            [CodeTeleportLoader replaceMethodFrom:object_getClass(class.self)
-                                toClass:object_getClass(oldClass)];
+            [CodeTeleportLoader patchInitForClass:oldClass];
         }
     }
 }
@@ -62,9 +58,9 @@ static void *dylibHandle;
 {
     unsigned int methodCount;
     Method *methods = class_copyMethodList(class, &methodCount);
-//    CTLog("dylib class %@ methodCount: %u",class,methodCount);
+    CTLog("dylib class %@ methodCount: %u",class,methodCount);
     for (int index=0; index < methodCount; index++) {
-//        CTLog("exchange method: %@",NSStringFromSelector(method_getName(methods[index])));
+        CTLog("exchange method: %@",NSStringFromSelector(method_getName(methods[index])));
          IMP oldMethod = class_replaceMethod(toClass, method_getName(methods[index]),
                                              method_getImplementation(methods[index]),
                                              method_getTypeEncoding(methods[index]));
@@ -78,6 +74,18 @@ static void *dylibHandle;
 
 +(void)patchInitForClass:(Class)class
 {
+    SEL patchInitSelector = @selector(codeteleport_patch_init);
+    Method patchedMethod = class_getInstanceMethod(class, patchInitSelector);
+    
+    SEL stubSelector = @selector(codeteleport_patch_stub);
+    Method stubMethod = class_getInstanceMethod(class, stubSelector);
+    
+    if (patchedMethod != NULL || stubMethod != NULL) {
+        // already patched
+        CTLog(@"patched already: %@", [self dumpClass:class]);
+        return;
+    }
+    
     // get class orginalInit imp
     SEL initSelector = @selector(init);
     Method initMethod = class_getInstanceMethod(class, initSelector);
@@ -101,12 +109,12 @@ static void *dylibHandle;
     // Otherwise addPatchInit = YES
     BOOL addPatchInit = class_addMethod(class, initSelector, patchInitIMP, method_getTypeEncoding(initMethod));
     if (addPatchInit == YES) {
+        [self addStubMethod:class];
         CTLog(@"patched by addInit: %@", [self dumpClass:class]);
         return;
     }
     
     // otherwise add patchInitMethod method
-    SEL patchInitSelector = @selector(codeteleport_patch_init);
     Method patchInitMethod = class_getInstanceMethod([self class], patchInitSelector);
     addPatchInit = class_addMethod(class, patchInitSelector, patchInitIMP, method_getTypeEncoding(patchInitMethod));
     if (addPatchInit == NO) {
@@ -120,12 +128,21 @@ static void *dylibHandle;
     CTLog(@"patched by exchange method: %@", [self dumpClass:class]);
 }
 
++ (void)addStubMethod:(Class) class
+{
+    SEL stubSelector = @selector(codeteleport_patch_stub);
+    Method stubMethod = class_getInstanceMethod(self, stubSelector);
+    IMP stubIMP = method_getImplementation(stubMethod);
+    BOOL addStub = class_addMethod(class, stubSelector, stubIMP, method_getTypeEncoding(stubMethod));
+    NSAssert(addStub, @"addStub failed, some exceptions have occurred");
+}
+
 +(NSString *)dumpClass:(Class)class
 {
     return [NSString stringWithFormat:@"%@(0x%08x)", class, (unsigned int)class];
 }
 
-- (id)codeteleport_add_init
+- (id)codeteleport_patch_stub
 {
     CTLogAssertNO(@"This method can not be called, maybe something wrong.");
     return nil;

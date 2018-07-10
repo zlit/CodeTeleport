@@ -311,7 +311,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ ! -d \"/tmp/CodeTeleport\" ]; then\nmkdir /tmp/CodeTeleport\nfi\n\nprintf \"$SRCROOT#$DEVELOPER_DIR#$BUILD_DIR#$DT_TOOLCHAIN_DIR#$PLATFORM_DEVELOPER_SDK_DIR#$TARGET_DEVICE_OS_VERSION#$CURRENT_ARCH#$TARGET_DEVICE_IDENTIFIER\" > /tmp/CodeTeleport/build_enviroment.configs";
+			shellScript = "tmp_path=\"/tmp/com.zhaolei.CodeTeleport\"\nif [ ! -d $tmp_path ]; then\nmkdir $tmp_path\nfi\n\nprintf \"$SRCROOT#$DEVELOPER_DIR#$BUILD_DIR#$DT_TOOLCHAIN_DIR#$PLATFORM_DEVELOPER_SDK_DIR#$TARGET_DEVICE_OS_VERSION#$CURRENT_ARCH#$TARGET_DEVICE_IDENTIFIER\" > $tmp_path/build_enviroment.configs";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */

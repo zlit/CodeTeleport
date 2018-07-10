@@ -48,7 +48,10 @@ void test(){
 }
 
 - (void)log
-{
+{ 
+    [self.button setTitle:@"add testVC9" forState:UIControlStateNormal];
+    return;
+    
     NSLog(@"self class : %p,image:%s",[self class],class_getImageName([self class]));
 //    [ViewController printMethodAddress:[self class]];
 //    [ViewController printIvarAddress:[self class]];
@@ -63,8 +66,6 @@ void test(){
     [ViewController logStatic];
     NSLog(@"test point :%p",test);
     
-    [self.button setTitle:@"add testVC0" forState:UIControlStateNormal];
-     
 //    Class class = [TestOBJ class];
 //    NSLog(@"555%p",class);
 //    NSLog(@"%p",objc_getClass("TestOBJ"));
@@ -92,7 +93,7 @@ void test(){
     // Do any additional setup after loading the view, typically from a nib.
 //       5
     
-//    [CodeTeleportLoader loadDylibWithPath:@"/private/tmp/CodeTeleport/BuildTask_552390664/codeTeleport_552390664.dylib"
+//    [CodeTeleportLoader loadDylibWithPath:@"/private/tmp/com.zhaolei.CodeTeleport/BuildTask_552390664/codeTeleport_552390664.dylib"
 //                     classNames:@[@"TestOBJ"]];
     
 }
