@@ -771,16 +771,16 @@
         <window title="CodeTeleport Notice" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="alertPanel" frameAutosaveName="" id="gtE-pM-7H3" customClass="NSPanel">
             <windowStyleMask key="styleMask" titled="YES" utility="YES" HUD="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="1148" y="719" width="222" height="88"/>
+            <rect key="contentRect" x="1148" y="719" width="276" height="88"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
             <view key="contentView" id="WJL-ho-WPh">
-                <rect key="frame" x="0.0" y="0.0" width="222" height="88"/>
+                <rect key="frame" x="0.0" y="0.0" width="276" height="88"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xXh-hQ-z4t">
-                        <rect key="frame" x="7" y="0.0" width="208" height="88"/>
+                        <rect key="frame" x="7" y="0.0" width="261" height="88"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" id="n1c-hC-nyF">
+                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" id="n1c-hC-nyF">
                             <font key="font" size="14" name="PingFangSC-Semibold"/>
                             <color key="textColor" name="highlightColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -788,7 +788,7 @@
                     </textField>
                 </subviews>
             </view>
-            <point key="canvasLocation" x="-264" y="-750"/>
+            <point key="canvasLocation" x="-291" y="-750"/>
         </window>
     </objects>
 </document>

@@ -40,6 +40,7 @@
         };
         
         self.builder.buildFailedBlock = ^(CTBuilder *builder, NSString *msg) {
+            [appdelegate() showCompeledNotice:@"Error: please see the Xcode output log for detail."];
             [weakSelf writeResponse:@"ERROR " msg:msg];
         };
         
