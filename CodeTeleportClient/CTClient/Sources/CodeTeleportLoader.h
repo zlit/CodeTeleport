@@ -12,6 +12,8 @@
 
 + (void)loadDylibWithPath:(NSString *) path
                classNames:(NSArray *) classNames
-                    error:(NSError **) error;
+                    error:(NSError **) error
+    replaceOldClassMethod:(BOOL) replaceOldClassMethod
+         replaceBlackList:(NSArray *) replaceBlackList;
 
 @end

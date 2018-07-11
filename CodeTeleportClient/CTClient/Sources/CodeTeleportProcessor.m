@@ -37,14 +37,25 @@
         [self writeResponse:@"CLIENTINFO " msg:stringBuilder];
     }else if ([message hasPrefix:@"TELEPORT "]) {
         NSString *dylibInfo = [message substringFromIndex:@"TELEPORT ".length];
-        NSString *dylibPath = [[dylibInfo componentsSeparatedByString:@"#"] firstObject];
-        NSArray *classNames = [[[dylibInfo componentsSeparatedByString:@"#"] lastObject] componentsSeparatedByString:@"|"];
+        NSArray *dylibInfoArray = [dylibInfo componentsSeparatedByString:@"#"];
+        NSString *dylibPath = [dylibInfoArray firstObject];
+        NSArray *classNames = [[dylibInfoArray objectAtIndex:1] componentsSeparatedByString:@"|"];
+        NSArray *replaceOldClassInfos = [[dylibInfoArray lastObject] componentsSeparatedByString:@"|"];
+        
+        BOOL replaceOldClassMethod = [[replaceOldClassInfos firstObject] boolValue];
+        NSArray *replaceBlackList = [[replaceOldClassInfos lastObject] componentsSeparatedByString:@";"];
         
         if(dylibPath.length > 0
            && [classNames count] > 0){
             dispatch_async(dispatch_get_main_queue(), ^{
                 NSError *error;
-                [CodeTeleportLoader loadDylibWithPath:dylibPath classNames:classNames error:&error];
+                
+                [CodeTeleportLoader loadDylibWithPath:dylibPath
+                                           classNames:classNames
+                                                error:&error
+                                replaceOldClassMethod:replaceOldClassMethod
+                                     replaceBlackList:replaceBlackList];
+                
                 if(error == nil){
                     [[NSNotificationCenter defaultCenter] postNotificationName:kCodeTeleportCompletedNotification
                                                                         object:nil];

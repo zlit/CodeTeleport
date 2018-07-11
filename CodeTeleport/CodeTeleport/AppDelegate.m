@@ -13,10 +13,17 @@
 #import "CTUtils.h"
 #import <Carbon/Carbon.h>
 
-@interface AppDelegate ()
+#define kUrlScheme @"urlScheme"
+#define kUrlSchemeSwitch @"urlSchemeSwitch"
+
+#define kReplaceOldClassSwitch @"kReplaceOldClassSwitch"
+#define kReplaceOldClassBlackList @"kReplaceOldClassBlackList"
+
+@interface AppDelegate () <NSTextFieldDelegate>
 - (IBAction)trigger:(id)sender;
 - (IBAction)completedAction:(id)sender;
 - (IBAction)quit:(id)sender;
+- (IBAction)blackListInputAction:(id)sender;
 @property (weak) IBOutlet NSTextField *noticeText;
 @property (weak) IBOutlet NSPanel *completedNotice;
 @property (weak) IBOutlet NSMenu *menu;
@@ -55,16 +62,40 @@
     [[NSAppleEventManager sharedAppleEventManager] setEventHandler:self
                                                        andSelector:@selector(handleURLEvent:withReplyEvent:)
                                                      forEventClass:kInternetEventClass andEventID:kAEGetURL];
-    self.urlInput.stringValue = [[NSUserDefaults standardUserDefaults] stringForKey:@"urlScheme"];
-    self.urlCheckBox.state = [[NSUserDefaults standardUserDefaults] boolForKey:@"urlSchemeSwitch"];
+    self.urlInput.stringValue = [[NSUserDefaults standardUserDefaults] stringForKey:kUrlScheme];
+    self.urlCheckBox.state = [[NSUserDefaults standardUserDefaults] boolForKey:kUrlSchemeSwitch];
     self.urlScheme = self.urlInput.stringValue;
+    [self.urlInput setDelegate:self];
     
+    self.notificationInput.stringValue = [[NSUserDefaults standardUserDefaults] stringForKey:kReplaceOldClassBlackList];
+    self.notificationCheckBox.state = [[NSUserDefaults standardUserDefaults] boolForKey:kReplaceOldClassSwitch];
+    [self.notificationInput setDelegate:self];
+    
+    self.replaceBlackList = self.notificationInput.stringValue;
+    self.replaceOldClassSwitch = self.notificationCheckBox.state;
     self.completedNotice.animationBehavior = NSWindowAnimationBehaviorAlertPanel;
+}
+
+- (void)controlTextDidEndEditing:(NSNotification *)notification {
+    NSTextField *textField = [notification object];
+    if(self.urlInput == textField){
+        [[NSUserDefaults standardUserDefaults] setObject:self.urlInput.stringValue forKey:kUrlScheme];
+        if(self.urlCheckBox.state == YES){
+            self.urlScheme = self.urlInput.stringValue;
+        }
+    }else{
+        [[NSUserDefaults standardUserDefaults] setObject:self.replaceBlackList forKey:kReplaceOldClassBlackList];
+        self.replaceBlackList = textField.stringValue;
+    }
 }
 
 -(void)notificationCheckBoxAction:(NSButton *)sender
 {
-    sender.state = YES;
+    self.replaceOldClassSwitch = sender.state;
+    self.notificationInput.editable = sender.state;
+    self.replaceBlackList = self.notificationInput.stringValue;
+    [[NSUserDefaults standardUserDefaults] setBool:sender.state forKey:kReplaceOldClassSwitch];
+    [[NSUserDefaults standardUserDefaults] setObject:self.replaceBlackList forKey:kReplaceOldClassBlackList];
 }
 
 -(void)urlCheckBoxAction:(NSButton *)sender
@@ -81,8 +112,8 @@
     }else{
         self.urlScheme = @"";
     }
-    [[NSUserDefaults standardUserDefaults] setObject:self.urlScheme forKey:@"urlScheme"];
-    [[NSUserDefaults standardUserDefaults] setBool:sender.state forKey:@"urlSchemeSwitch"];
+    [[NSUserDefaults standardUserDefaults] setBool:sender.state forKey:kUrlSchemeSwitch];
+    [[NSUserDefaults standardUserDefaults] setObject:self.urlInput.stringValue forKey:kUrlScheme];
 }
 
 - (void)handleURLEvent:(NSAppleEventDescriptor*)theEvent withReplyEvent:(NSAppleEventDescriptor*)replyEvent
@@ -136,11 +167,13 @@
 
 - (void)showCompeledNotice:(NSString *)notice
 {
-    self.noticeText.stringValue = notice;
-    [self.completedNotice setIsVisible:YES];
-    [NSApp activateIgnoringOtherApps:YES];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self.completedNotice setIsVisible:NO];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        self.noticeText.stringValue = notice;
+        [self.completedNotice setIsVisible:YES];
+        [NSApp activateIgnoringOtherApps:YES];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self.completedNotice setIsVisible:NO];
+        });
     });
 }
 

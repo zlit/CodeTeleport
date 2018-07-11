@@ -18,10 +18,10 @@
 + (void)load{
     [CodeTeleportSwizzle exchangeMethod:NSClassFromString(@"UIViewController")
                                selector:@selector(init)
-                             toSelector:@selector(codeteleport_init)];
+                             toSelector:@selector(codeteleport_swizzle_vc_init)];
     [CodeTeleportSwizzle exchangeMethod:NSClassFromString(@"UIViewController")
                                selector:NSSelectorFromString(@"dealloc")
-                             toSelector:@selector(codeteleport_dealloc)];
+                             toSelector:@selector(codeteleport_swizzle_vc_dealloc)];
 }
 
 + (void)exchangeMethod:(Class)class selector:(SEL)originalSelector toSelector:(SEL)swizzledSelector
@@ -40,11 +40,11 @@
     }
 }
 
-- (id)codeteleport_init
+- (id)codeteleport_swizzle_vc_init
 {
     id instance;
-    if ([self respondsToSelector:@selector(codeteleport_init)]) {
-        instance = [self codeteleport_init];
+    if ([self respondsToSelector:@selector(codeteleport_swizzle_vc_init)]) {
+        instance = [self codeteleport_swizzle_vc_init];
     } else {
         instance = [self init];
     }
@@ -55,12 +55,12 @@
     return instance;
 }
 
-- (void)codeteleport_dealloc
+- (void)codeteleport_swizzle_vc_dealloc
 {
     if([self respondsToSelector:@selector(codeteleport_completed)]){
         [[NSNotificationCenter defaultCenter] removeObserver:self name:kCodeTeleportCompletedNotification object:nil];
     }
-    [self codeteleport_dealloc];
+    [self codeteleport_swizzle_vc_dealloc];
 }
 
 #pragma clang diagnostic pop

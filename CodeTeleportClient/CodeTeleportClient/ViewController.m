@@ -29,57 +29,26 @@ void test(){
 
 @implementation ViewController
 
-- (void)addText{
-    
-}
-
 - (instancetype)init
 {
     self = [super init];
     if (self) {
-             
+        NSLog(@"init:------------8");
     }
     return self;
 }
 
-+ (void)logStatic
-{
-    NSLog(@" logStatic self : %p",self);
-}
-
 - (void)log
-{ 
-    [self.button setTitle:@"add testVC9" forState:UIControlStateNormal];
-    return;
-    
-    NSLog(@"self class : %p,image:%s",[self class],class_getImageName([self class]));
-//    [ViewController printMethodAddress:[self class]];
-//    [ViewController printIvarAddress:[self class]];
-//
-////    NSLog(@"objc_getClass %p",objc_getClass("ViewController"));
-//    NSLog(@"NSClassFromString %p,image:%s",NSClassFromString(@"ViewController"),class_getImageName(NSClassFromString(@"ViewController")));
-//
-//    NSLog(@"ViewController class : %p,image:%s",[ViewController class],class_getImageName([ViewController class]));
-//    [ViewController printMethodAddress:[ViewController class]];
-//    [ViewController printIvarAddress:[ViewController class]];
-
-    [ViewController logStatic];
-    NSLog(@"test point :%p",test);
-    
-//    Class class = [TestOBJ class];
-//    NSLog(@"555%p",class);
-//    NSLog(@"%p",objc_getClass("TestOBJ"));
-//    TestOBJ *obj1 = [[class.self alloc] init];
-    
-//    self.obj2 = [[TestOBJ alloc] init];
-//    self.obj3 = [[TestOBJ alloc] init];
-//    self.obj4 = [[TestOBJ alloc] init];
-    
-//    [self.obj1 log];
-//    [self.obj2 log];
-//    [self.obj3 log];
-//    [self.obj4 log];
+{
+    NSLog(@"logloglogloglog:8");
+    [self.button setTitle:@"add testVC1" forState:UIControlStateNormal];
 }
+
+- (void)aui_isKindOfClass:(id) sender
+{
+    NSLog(@"aui_isKindOfClass:8");
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
@@ -88,11 +57,11 @@ void test(){
     [self.button addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
     self.button.frame = CGRectMake(100, 50, 100, 50);
     [self.view addSubview:self.button];
-    testVar = 5;
+    testVar = 5; 
     [self log];
+    [self aui_isKindOfClass:nil];
     // Do any additional setup after loading the view, typically from a nib.
 //       5
-    
 //    [CodeTeleportLoader loadDylibWithPath:@"/private/tmp/com.zhaolei.CodeTeleport/BuildTask_552390664/codeTeleport_552390664.dylib"
 //                     classNames:@[@"TestOBJ"]];
     
@@ -100,7 +69,10 @@ void test(){
 
 - (void)codeteleport_completed
 {
-    [self log]; 
+    for (UIView *subView in self.view.subviews) {
+        [subView removeFromSuperview];
+    }
+    [self viewDidLoad]; 
 }
 
 - (void)buttonClicked:(id)sender {
@@ -108,7 +80,6 @@ void test(){
     [self.navigationController pushViewController:[objc_getClass("ViewController") new] animated:YES];
 //    [self.navigationController pushViewController:[ViewController new] animated:YES];
 }
-
 
 //+ (void)printMethodAddress:(Class) class
 //{

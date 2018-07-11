@@ -102,7 +102,8 @@ static int kThreadIndex = 1;
     __weak CTBuilder *weakSelf = self;
     dispatch_async(_teleportQueue, ^{
         if ([weakSelf.waitingForTeleport count] == 0) {
-            CTLog(@"no files  waiting for Teleport.");
+            CTLog(@"no file waiting for Teleport.");
+            [appdelegate() showCompeledNotice:@"no file waiting for Teleport."];
             return;
         }
         

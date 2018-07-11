@@ -695,7 +695,7 @@
                         <action selector="trigger:" target="Voe-Tx-rLC" id="VYm-ib-V2g"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Teleport Completed Action" id="qDN-GB-D45">
+                <menuItem title="Preferences..." id="qDN-GB-D45">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="completedAction:" target="Voe-Tx-rLC" id="iRw-4y-DgH"/>
@@ -731,9 +731,9 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Kz9-Ky-t9T">
-                        <rect key="frame" x="14" y="106" width="93" height="19"/>
+                        <rect key="frame" x="14" y="106" width="309" height="19"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <buttonCell key="cell" type="check" title="Notification" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="AU0-y7-cjM">
+                        <buttonCell key="cell" type="check" title="Replace Old Class Method Except BlackList" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="AU0-y7-cjM">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
@@ -758,7 +758,7 @@
                     <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="izF-QY-nbR">
                         <rect key="frame" x="37" y="78" width="287" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" enabled="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="CodeTeleportCompleted" placeholderString="CodeTeleportCompleted" drawsBackground="YES" id="n4q-NI-Lyx">
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="method blackList , enter to work" drawsBackground="YES" id="n4q-NI-Lyx">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -768,7 +768,7 @@
             </view>
             <point key="canvasLocation" x="-168.5" y="-521.5"/>
         </window>
-        <window title="CodeTeleport Completed" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="alertPanel" frameAutosaveName="" id="gtE-pM-7H3" customClass="NSPanel">
+        <window title="CodeTeleport Notice" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="alertPanel" frameAutosaveName="" id="gtE-pM-7H3" customClass="NSPanel">
             <windowStyleMask key="styleMask" titled="YES" utility="YES" HUD="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="1148" y="719" width="222" height="88"/>

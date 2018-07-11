@@ -12,6 +12,8 @@
 
 @interface AppDelegate ()
 
+@property(nonatomic,strong) UINavigationController* navigationController;
+
 @end
 
 @implementation AppDelegate
@@ -26,8 +28,8 @@
     
     ViewController *vc = [[ViewController alloc] init];
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-    UINavigationController* navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
-    self.window.rootViewController = navigationController;
+    self.navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
+    self.window.rootViewController = self.navigationController;
     [self.window makeKeyAndVisible];
     return YES;
 }
@@ -38,6 +40,9 @@
     // 接受传过来的参数
     NSString *text = [[url host] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSLog(@"%@",text);
+    
+    ViewController *vc = [NSClassFromString(@"ViewController") new];
+    [self.navigationController pushViewController:vc animated:NO];
     return YES;
 }
 

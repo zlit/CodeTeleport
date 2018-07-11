@@ -30,6 +30,12 @@
         __weak CTProcessor *weakSelf = self;
         
         self.builder.buildCompletedBlock = ^(CTBuilder *builder, NSString *msg){
+            
+            msg = [msg stringByAppendingFormat:@"#%d",appdelegate().replaceOldClassSwitch];
+            if(appdelegate().replaceOldClassSwitch
+               && appdelegate().replaceBlackList.length > 0){
+                msg = [msg stringByAppendingFormat:@"|%@",appdelegate().replaceBlackList];
+            }
             [weakSelf writeResponse:@"TELEPORT " msg:msg];
         };
         
@@ -65,14 +71,13 @@
         }
         NSString *teleportClass = [message substringFromIndex:@"COMPLETE ".length];
         teleportClass = [teleportClass stringByReplacingOccurrencesOfString:@"|" withString:@"\n"];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [appdelegate() showCompeledNotice:teleportClass];
-        });
+
+        [appdelegate() showCompeledNotice:teleportClass];
         CTLog(@"client load dylib complete.");
     }else if ([message hasPrefix:@"FAILED "]) {
         NSString *errorInfo = [message substringFromIndex:@"FAILED ".length];
         CTLog(@"%@",errorInfo);
-        [appdelegate() showCompeledNotice:@"ERROR: compile fialed."];
+        [appdelegate() showCompeledNotice:errorInfo];
     }
 }
 
