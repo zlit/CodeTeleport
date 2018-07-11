@@ -24,8 +24,10 @@ IMP dylibHandleClassInitIMP(){
             }
 
             IMP initIMP;
-        
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"        
             SEL patchInitSelector = @selector(codeteleport_patch_init);
+#pragma clang diagnostic pop
             Method patchInitMethod = class_getInstanceMethod([SELF class], patchInitSelector);
             // if SELF has patchInitMethod, class patched with exchangeImplementations
             // patchInitMethod point to oringal initIMP
@@ -71,11 +73,9 @@ IMP dylibHandleClassInitIMP(){
     for (NSUInteger class_index=0; class_index < [classNames count]; class_index++) {
         // load symbol
         NSString *className = [classNames objectAtIndex:class_index];
-        char class_symbol_name[256];
-        sprintf(class_symbol_name, "OBJC_CLASS_$_%s", [className cStringUsingEncoding:NSUTF8StringEncoding]);
         
-        CTLog(@"class_symbol_name:%s,index:%lu",class_symbol_name,class_index);
-        Class class = (__bridge Class)(dlsym(dylibHandle, class_symbol_name));
+        Class class = [CodeTeleportLoader getClassWithDylib:dylibHandle
+                                                  className:className];
         if (class) {
             //patch init to set newClass when new a object
             [CodeTeleportLoader patchInitForClass:class];
@@ -93,39 +93,6 @@ IMP dylibHandleClassInitIMP(){
         }
     }
 }
-
-+ (void)replaceMethodFrom:(Class) class
-                  toClass:(Class) toClass
-         replaceBlackList:(NSArray *) replaceBlackList
-{
-    unsigned int methodCount;
-    Method *methods = class_copyMethodList(class, &methodCount);
-    CTLog("dylib class %@ methodCount: %u",class,methodCount);
-    for (int index=0; index < methodCount; index++) {
-        NSString *methodName = NSStringFromSelector(method_getName(methods[index]));
-        
-        BOOL isBlackList = NO;
-        for (NSString *blackListMethod in replaceBlackList) {
-            if([methodName hasPrefix:blackListMethod]){
-                isBlackList = YES;
-                break;
-            }
-        }
-        
-        if(isBlackList){
-            CTLog("method: %@ , in blackList.",methodName);
-            continue;
-        }
-        
-        CTLog("replace method: %@",methodName);
-        
-        class_replaceMethod(toClass, method_getName(methods[index]),
-                                        method_getImplementation(methods[index]),
-                                        method_getTypeEncoding(methods[index]));
-    }
-}
-
-#pragma mark ----- test
 
 +(void)patchInitForClass:(Class)class
 {
@@ -163,6 +130,17 @@ IMP dylibHandleClassInitIMP(){
     CTLog(@"patched by exchange method: %@", [self dumpClass:class]);
 }
 
++ (Class)getClassWithDylib:(void *) dylib
+                 className:(NSString *) className
+{
+    char class_symbol_name[256];
+    sprintf(class_symbol_name, "OBJC_CLASS_$_%s", [className cStringUsingEncoding:NSUTF8StringEncoding]);
+    Class class = (__bridge Class)(dlsym(dylib, class_symbol_name));
+    CTLog(@"class_symbol_name:%s,address: %p",class_symbol_name,class);
+    return class;
+}
+
+
 +(NSString *)dumpClass:(Class)class
 {
     return [NSString stringWithFormat:@"%@(0x%08x)", class, (unsigned int)class];
@@ -172,6 +150,37 @@ IMP dylibHandleClassInitIMP(){
 {
     CTLogAssertNO(@"This method can not be called, maybe something wrong.");
     return nil;
+}
+
++ (void)replaceMethodFrom:(Class) class
+                  toClass:(Class) toClass
+         replaceBlackList:(NSArray *) replaceBlackList
+{
+    unsigned int methodCount;
+    Method *methods = class_copyMethodList(class, &methodCount);
+    CTLog("dylib class %@ methodCount: %u",class,methodCount);
+    for (int index=0; index < methodCount; index++) {
+        NSString *methodName = NSStringFromSelector(method_getName(methods[index]));
+        
+        BOOL isBlackList = NO;
+        for (NSString *blackListMethod in replaceBlackList) {
+            if([methodName hasPrefix:blackListMethod]){
+                isBlackList = YES;
+                break;
+            }
+        }
+        
+        if(isBlackList){
+            CTLog("method: %@ , in blackList.",methodName);
+            continue;
+        }
+        
+        CTLog("replace method: %@",methodName);
+        
+        class_replaceMethod(toClass, method_getName(methods[index]),
+                            method_getImplementation(methods[index]),
+                            method_getTypeEncoding(methods[index]));
+    }
 }
 
 @end

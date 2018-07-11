@@ -27,6 +27,8 @@
 #import <sys/uio.h>
 #import <unistd.h>
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 
 #if 0
 
@@ -6275,11 +6277,12 @@ static OSStatus SSLWriteFunction(SSLConnectionRef connection, const void *data, 
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
 	LogInfo(@"ListenerThread: Started");
-	
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"  
 	// We can't run the run loop unless it has an associated input source or a timer.
 	// So we'll just create a timer that will never fire - unless the server runs for 10,000 years.
 	[NSTimer scheduledTimerWithTimeInterval:DBL_MAX target:self selector:@selector(ignore:) userInfo:nil repeats:NO];
-	
+#pragma clang diagnostic pop
 	[[NSRunLoop currentRunLoop] run];
 	
 	LogInfo(@"ListenerThread: Stopped");
@@ -6881,3 +6884,4 @@ static void CFWriteStreamCallback (CFWriteStreamRef stream, CFStreamEventType ty
 }
 
 @end	
+#pragma clang diagnostic pop

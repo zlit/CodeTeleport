@@ -12,8 +12,6 @@
 #import <objc/runtime.h>
 //#import "CodeTeleportUtils.h"
 
-static int testStaticVar = 0;
-
 void test(){
     
     NSLog(@"000");
