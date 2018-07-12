@@ -82,10 +82,10 @@ IMP dylibHandleClassInitIMP(){
                                                   className:className];
         
         if (class) {
-            [dylibClassDic setObject:class forKey:className];
             //patch init to set newClass when new a object
             [CodeTeleportLoader patchInitForClass:class];
-        
+            [dylibClassDic setObject:class forKey:className];
+            
             Class oldClass = NSClassFromString(className);
             if(oldClass){
                 [CodeTeleportLoader patchInitForClass:oldClass];
@@ -116,7 +116,7 @@ IMP dylibHandleClassInitIMP(){
     // get patchInitImp
     SEL patchInitSelector = @selector(codeteleport_patch_init);
     Method patchInitMethod = class_getInstanceMethod([self class], patchInitSelector);
-    // using block implemetation can hold origin init implementation, for later use
+    // using block implemetation can set newest Class, for later use
     IMP patchInitIMP = dylibHandleClassInitIMP();
     
     // try to add init method
