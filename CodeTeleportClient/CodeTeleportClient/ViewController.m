@@ -31,20 +31,20 @@ void test(){
 {
     self = [super init];
     if (self) {
-        NSLog(@"init:------------8");
+        NSLog(@"init:------------6");
     }
     return self;
 }
-
+  
 - (void)log
 {
-    NSLog(@"logloglogloglog:8");
-    [self.button setTitle:@"add testVC1" forState:UIControlStateNormal];
+    NSLog(@"logloglogloglog:6");
+    [self.button setTitle:@"add testVC5" forState:UIControlStateNormal];
 }
 
 - (void)aui_isKindOfClass:(id) sender
 {
-    NSLog(@"aui_isKindOfClass:8");
+//    NSLog(@"aui_isKindOfClass:8");
 }
 
 - (void)viewDidLoad {
@@ -67,13 +67,13 @@ void test(){
 
 - (void)codeteleport_completed
 {
-    for (UIView *subView in self.view.subviews) {
-        [subView removeFromSuperview];
-    }
-    [self viewDidLoad]; 
+//    for (UIView *subView in self.view.subviews) {
+//        [subView removeFromSuperview];
+//    }
+//    [self viewDidLoad];
 }
 
-- (void)buttonClicked:(id)sender {
+- (void)buttonClicked:(id)sender { 
     //    [self log]; 
     [self.navigationController pushViewController:[objc_getClass("ViewController") new] animated:YES];
 //    [self.navigationController pushViewController:[ViewController new] animated:YES];

@@ -23,7 +23,6 @@
 - (IBAction)trigger:(id)sender;
 - (IBAction)completedAction:(id)sender;
 - (IBAction)quit:(id)sender;
-- (IBAction)blackListInputAction:(id)sender;
 @property (weak) IBOutlet NSTextField *noticeText;
 @property (weak) IBOutlet NSPanel *completedNotice;
 @property (weak) IBOutlet NSMenu *menu;
@@ -42,19 +41,42 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     // Insert code here to initialize your application
     
-    CTLog(@"----------aNotification:%@",aNotification);
-    CTLog(@"----------processInfo:%@",[[NSProcessInfo processInfo] arguments]);
+    [self initSstatusItem];
+    [self registerHandle];
     
+    //urlCheckBox
+    [self.urlCheckBox setAction:@selector(urlCheckBoxAction:)];
+    self.urlCheckBox.state = [[NSUserDefaults standardUserDefaults] boolForKey:kUrlSchemeSwitch];
+    
+    //urlInput
+    [self.urlInput setDelegate:self];
+    self.urlInput.stringValue = [[NSUserDefaults standardUserDefaults] stringForKey:kUrlScheme];
+    self.urlScheme = self.urlInput.stringValue;
+    
+    //notificationCheckBox
+    [self.notificationCheckBox setAction:@selector(notificationCheckBoxAction:)];
+    self.notificationInput.stringValue = [[NSUserDefaults standardUserDefaults] stringForKey:kReplaceOldClassBlackList];
+    self.notificationCheckBox.state = [[NSUserDefaults standardUserDefaults] boolForKey:kReplaceOldClassSwitch];
+    [self.notificationInput setDelegate:self];
+    self.replaceBlackList = self.notificationInput.stringValue;
+    self.replaceOldClassSwitch = self.notificationCheckBox.state;
+    
+    //completedNotice
+    self.completedNotice.animationBehavior = NSWindowAnimationBehaviorAlertPanel;
+}
+
+- (void)initSstatusItem
+{
     self.statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
     self.statusItem.highlightMode = YES;
     self.statusItem.menu = self.menu;
     self.statusItem.enabled = TRUE;
     [self setStatusIcon:StatusIconTypeIdle];
     self.statusItem.alternateImage = self.statusItem.image;
-    
-    [self.notificationCheckBox setAction:@selector(notificationCheckBoxAction:)];
-    [self.urlCheckBox setAction:@selector(urlCheckBoxAction:)];
-    
+}
+
+- (void)registerHandle
+{
     [[DDHotKeyCenter sharedHotKeyCenter] registerHotKeyWithKeyCode:kVK_ANSI_4
                                                      modifierFlags:NSEventModifierFlagCommand
                                                             target:self action:@selector(triggerTeleport) object:nil];
@@ -62,18 +84,6 @@
     [[NSAppleEventManager sharedAppleEventManager] setEventHandler:self
                                                        andSelector:@selector(handleURLEvent:withReplyEvent:)
                                                      forEventClass:kInternetEventClass andEventID:kAEGetURL];
-    self.urlInput.stringValue = [[NSUserDefaults standardUserDefaults] stringForKey:kUrlScheme];
-    self.urlCheckBox.state = [[NSUserDefaults standardUserDefaults] boolForKey:kUrlSchemeSwitch];
-    self.urlScheme = self.urlInput.stringValue;
-    [self.urlInput setDelegate:self];
-    
-    self.notificationInput.stringValue = [[NSUserDefaults standardUserDefaults] stringForKey:kReplaceOldClassBlackList];
-    self.notificationCheckBox.state = [[NSUserDefaults standardUserDefaults] boolForKey:kReplaceOldClassSwitch];
-    [self.notificationInput setDelegate:self];
-    
-    self.replaceBlackList = self.notificationInput.stringValue;
-    self.replaceOldClassSwitch = self.notificationCheckBox.state;
-    self.completedNotice.animationBehavior = NSWindowAnimationBehaviorAlertPanel;
 }
 
 - (void)controlTextDidEndEditing:(NSNotification *)notification {
@@ -118,13 +128,11 @@
 
 - (void)handleURLEvent:(NSAppleEventDescriptor*)theEvent withReplyEvent:(NSAppleEventDescriptor*)replyEvent
 {
-    
     NSString* schemeUrl = [[theEvent paramDescriptorForKeyword:keyDirectObject] stringValue];
     CTLog(@"----------scheme url :%@",schemeUrl);
     NSURLComponents *components = [NSURLComponents componentsWithString:schemeUrl];
     NSArray *queryItems = components.queryItems;
     CTLog(@"queryItems:%@",queryItems);
-    
 }
 
 - (void)setStatusIcon:(StatusIconType) state
@@ -157,8 +165,6 @@
 - (IBAction)completedAction:(id)sender {
     [self.actionWindow setIsVisible:YES];
     [NSApp activateIgnoringOtherApps:YES];
-//    [self.actionWindow makeKeyAndOrderFront:nil];
-//    [self.actionWindow setLevel:NSStatusWindowLevel];
 }
 
 - (IBAction)quit:(id)sender {

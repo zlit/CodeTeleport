@@ -12,12 +12,12 @@
 #import "CodeTeleportUtils.h"
 
 static void *dylibHandle;
+static NSMutableDictionary *dylibClassDic;
 
 IMP dylibHandleClassInitIMP(){
     return imp_implementationWithBlock(^id(id SELF, SEL selector){
-            NSString *classSymbolName = [NSString stringWithFormat:@"OBJC_CLASS_$_%@", [SELF class]];
-            Class dylibClass = (__bridge Class)dlsym(dylibHandle, classSymbolName.UTF8String);
-        
+            //dylibClass must be newest dylibClass,and have been patched
+            Class dylibClass = [dylibClassDic objectForKey:NSStringFromClass([SELF class])];
             Class currentClass = [SELF class];
             if (dylibClass && dylibClass != currentClass) {
                 object_setClass(SELF, dylibClass);
@@ -58,6 +58,10 @@ IMP dylibHandleClassInitIMP(){
         return;
     }
     
+    if (dylibClassDic == nil) {
+        dylibClassDic = [[NSMutableDictionary alloc] init];
+    }
+    
     // dispatch to main thread, because maybe class +load +initialize require;
     const char *dylibCString = [path cStringUsingEncoding:NSUTF8StringEncoding];
     
@@ -76,26 +80,33 @@ IMP dylibHandleClassInitIMP(){
         
         Class class = [CodeTeleportLoader getClassWithDylib:dylibHandle
                                                   className:className];
+        
         if (class) {
+            [dylibClassDic setObject:class forKey:className];
             //patch init to set newClass when new a object
             [CodeTeleportLoader patchInitForClass:class];
-        }
         
-        Class oldClass = NSClassFromString(className);
-        if(oldClass){ 
-            [CodeTeleportLoader patchInitForClass:oldClass];
-        }
-        
-        if(replaceOldClassMethod){
-            [CodeTeleportLoader replaceMethodFrom:class
-                                          toClass:oldClass
-                                 replaceBlackList:replaceBlackList];
+            Class oldClass = NSClassFromString(className);
+            if(oldClass){
+                [CodeTeleportLoader patchInitForClass:oldClass];
+            }
+            
+            if(replaceOldClassMethod){
+                [CodeTeleportLoader replaceMethodFrom:class
+                                              toClass:oldClass
+                                     replaceBlackList:replaceBlackList];
+            }
         }
     }
 }
 
 +(void)patchInitForClass:(Class)class
 {
+    if ([CodeTeleportLoader checkPatchStub:class]) {
+        CTLog(@"%@ checkPatchStub YES, already patched.", [self dumpClass:class]);
+        return;
+    }
+    
     // get class orginal initImp
     // if class does't implement initSelector, orginalInitIMP is [super init]
     // otherwise orginalInitIMP is [class init]
@@ -113,6 +124,7 @@ IMP dylibHandleClassInitIMP(){
     // initSelector point to patchInitIMP
     BOOL addPatchInit = class_addMethod(class, initSelector, patchInitIMP, method_getTypeEncoding(initMethod));
     if (addPatchInit == YES) {
+        [CodeTeleportLoader addPatchStub:class];
         CTLog(@"patched by addInit: %@", [self dumpClass:class]);
         return;
     }
@@ -127,6 +139,7 @@ IMP dylibHandleClassInitIMP(){
     // exchange realtineInit to init
     Method newPatchMethod = class_getInstanceMethod(class, patchInitSelector);
     method_exchangeImplementations(initMethod, newPatchMethod);
+    [CodeTeleportLoader addPatchStub:class];
     CTLog(@"patched by exchange method: %@", [self dumpClass:class]);
 }
 
@@ -140,6 +153,26 @@ IMP dylibHandleClassInitIMP(){
     return class;
 }
 
++ (BOOL)checkPatchStub:(Class) class
+{
+    SEL stubSelector = @selector(codeteleport_patch_stub);
+    Method stubMethod = class_getInstanceMethod(class, stubSelector);
+    if (stubMethod != NULL) {
+        return YES;
+    }else{
+        return NO;
+    }
+}
+
++ (void)addPatchStub:(Class) class
+{
+    SEL stubSelector = @selector(codeteleport_patch_stub);
+    Method stubMethod = class_getInstanceMethod([self class], stubSelector);
+    BOOL addStub = class_addMethod(class, stubSelector, method_getImplementation(stubMethod), method_getTypeEncoding(stubMethod));
+    if (addStub == NO) {
+        CTLogAssertNO(@"add stub method failed!");
+    }
+}
 
 +(NSString *)dumpClass:(Class)class
 {
@@ -147,6 +180,12 @@ IMP dylibHandleClassInitIMP(){
 }
 
 - (id)codeteleport_patch_init
+{
+    CTLogAssertNO(@"This method can not be called, maybe something wrong.");
+    return nil;
+}
+
+- (id)codeteleport_patch_stub
 {
     CTLogAssertNO(@"This method can not be called, maybe something wrong.");
     return nil;

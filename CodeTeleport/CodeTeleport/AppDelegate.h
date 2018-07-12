@@ -20,7 +20,6 @@ typedef enum : NSUInteger {
 @property(nonatomic,assign) BOOL replaceOldClassSwitch;
 
 - (void)setStatusIcon:(StatusIconType) state;
-
 - (void)showCompeledNotice:(NSString *)notice;
 
 @end
