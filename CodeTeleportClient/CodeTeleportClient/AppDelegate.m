@@ -21,11 +21,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions { 
     // Override point for customization after application launch.
-    
-    NSString *clientBundlePath = [[NSBundle mainBundle] pathForResource:@"CTClient" ofType:@"framework"];
-    NSLog(@"%@",clientBundlePath);
-    [[NSBundle bundleWithPath:clientBundlePath] load];
-    
     ViewController *vc = [[ViewController alloc] init];
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
