@@ -87,7 +87,7 @@
     if([clientInfoList count] >= 2){
         [self.builder setArg:[clientInfoList objectAtIndex:0]
                   toProperty:@"frameworksPath"
-                 isDirectory:YES];
+                 isDirectory:NO];
     }
 
     //set config from client

@@ -2,3 +2,6 @@
 *.xcuserstate
 *.DS_Store
 *.xcbkptlist
+CodeTeleportClient/Output/Products/CodeTeleport.app 
+CodeTeleportClient/Output/Products/CTClient.framework
+CodeTeleport/CodeTeleport.xcodeproj/xcuserdata/zhaolei.xcuserdatad/

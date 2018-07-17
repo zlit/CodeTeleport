@@ -72,17 +72,7 @@ static int kThreadIndex = 1;
 
 - (BOOL)checkConfigValid
 {
-//    if(self.frameworksPath.length > 0
-//       && self.arch.length > 0
-//       && self.executablePath.length > 0
-//       && self.projectPath.length > 0
-//       && self.xcodeDev.length > 0
-//       && self.derivedLogs.length > 0
-//       && self.xctoolchain.length > 0){
-        return YES;
-//    }else{
-//        return NO;
-//    }
+    return YES;
 }
 
 - (void)addModifyFilePaths:(NSArray *) filePaths

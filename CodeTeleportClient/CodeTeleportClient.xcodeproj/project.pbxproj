@@ -23,8 +23,6 @@
 		448EF75C20EBA037004549C1 /* CodeTeleportLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = 448EF75A20EBA037004549C1 /* CodeTeleportLoader.h */; };
 		448EF75D20EBA037004549C1 /* CodeTeleportLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 448EF75B20EBA037004549C1 /* CodeTeleportLoader.m */; };
 		448EF76320ECD2F1004549C1 /* TestOBJ.m in Sources */ = {isa = PBXBuildFile; fileRef = 448EF76220ECD2F1004549C1 /* TestOBJ.m */; };
-		448EF76C20EDD014004549C1 /* CodeTeleportSwizzle.h in Headers */ = {isa = PBXBuildFile; fileRef = 448EF76A20EDD014004549C1 /* CodeTeleportSwizzle.h */; };
-		448EF76D20EDD014004549C1 /* CodeTeleportSwizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = 448EF76B20EDD014004549C1 /* CodeTeleportSwizzle.m */; };
 		448EF76E20EF0253004549C1 /* CTClient.framework in Resources */ = {isa = PBXBuildFile; fileRef = 444301B220E6299F00BD9445 /* CTClient.framework */; };
 		448EF7E520F5FE9E004549C1 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 448EF7E420F5FE9E004549C1 /* Default-568h@2x.png */; };
 		44BFD7C120F8812F004263AB /* CTClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 444301B220E6299F00BD9445 /* CTClient.framework */; };
@@ -77,8 +75,6 @@
 		448EF75B20EBA037004549C1 /* CodeTeleportLoader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CodeTeleportLoader.m; sourceTree = "<group>"; };
 		448EF76120ECD2F1004549C1 /* TestOBJ.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestOBJ.h; sourceTree = "<group>"; };
 		448EF76220ECD2F1004549C1 /* TestOBJ.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestOBJ.m; sourceTree = "<group>"; };
-		448EF76A20EDD014004549C1 /* CodeTeleportSwizzle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CodeTeleportSwizzle.h; sourceTree = "<group>"; };
-		448EF76B20EDD014004549C1 /* CodeTeleportSwizzle.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CodeTeleportSwizzle.m; sourceTree = "<group>"; };
 		448EF7E420F5FE9E004549C1 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -149,7 +145,6 @@
 		444301BF20E629EE00BD9445 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				448EF76920EDCFAC004549C1 /* Swizzle */,
 				444301C020E629EE00BD9445 /* GCDAsyncSocket */,
 				444301C520E629EE00BD9445 /* Utils */,
 				444301D420E62A0F00BD9445 /* CodeTeleportClient.h */,
@@ -181,15 +176,6 @@
 			path = Utils;
 			sourceTree = "<group>";
 		};
-		448EF76920EDCFAC004549C1 /* Swizzle */ = {
-			isa = PBXGroup;
-			children = (
-				448EF76A20EDD014004549C1 /* CodeTeleportSwizzle.h */,
-				448EF76B20EDD014004549C1 /* CodeTeleportSwizzle.m */,
-			);
-			path = Swizzle;
-			sourceTree = "<group>";
-		};
 		44BFD7BE20F880DD004263AB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -205,7 +191,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				444301CD20E629EE00BD9445 /* GCDAsyncSocket.h in Headers */,
-				448EF76C20EDD014004549C1 /* CodeTeleportSwizzle.h in Headers */,
 				444301D020E629EE00BD9445 /* CodeTeleportUtils.h in Headers */,
 				448EF75C20EBA037004549C1 /* CodeTeleportLoader.h in Headers */,
 				444301D620E62A0F00BD9445 /* CodeTeleportClient.h in Headers */,
@@ -348,7 +333,6 @@
 				444301D720E62A0F00BD9445 /* CodeTeleportClient.m in Sources */,
 				448EF75D20EBA037004549C1 /* CodeTeleportLoader.m in Sources */,
 				444301CF20E629EE00BD9445 /* CodeTeleportUtils.m in Sources */,
-				448EF76D20EDD014004549C1 /* CodeTeleportSwizzle.m in Sources */,
 				448EF74E20E8DD9C004549C1 /* CodeTeleportProcessor.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -522,6 +506,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = CTClient/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -549,6 +534,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = CTClient/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

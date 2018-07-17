@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDECodeSnippetCompletionPrefix</key>
+	<string>codeteleportfastcode</string>
+	<key>IDECodeSnippetCompletionScopes</key>
+	<array>
+		<string>All</string>
+	</array>
+	<key>IDECodeSnippetContents</key>
+	<string>#ifdef DEBUG
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+        [notificationCenter addObserver:self
+                               selector:@selector(codeteleport_completed) name:@"kCodeTeleportCompletedNotification"
+                                 object:nil];
+    }
+    return self;
+}
+
+- (void)dealloc
+{
+    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter removeObserver:self
+                                  name:@"kCodeTeleportCompletedNotification"
+                                object:nil];
+}
+
+- (void)codeteleport_completed
+{
+    for (UIView *subView in self.view.subviews) {
+        [subView removeFromSuperview];
+    }
+    [self viewDidLoad];
+}
+
+#endif</string>
+	<key>IDECodeSnippetIdentifier</key>
+	<string>822C67D1-9D97-4A8D-9BA3-18F57DEA0E56</string>
+	<key>IDECodeSnippetLanguage</key>
+	<string>Xcode.SourceCodeLanguage.Generic</string>
+	<key>IDECodeSnippetTitle</key>
+	<string>Code Teleport Fast Code</string>
+	<key>IDECodeSnippetUserSnippet</key>
+	<true/>
+	<key>IDECodeSnippetVersion</key>
+	<integer>0</integer>
+</dict>
+</plist>

@@ -37,25 +37,27 @@ projects.each do|project|
 
         script_phase.name = script_phase_name
         script_phase.shell_script = <<-EOS
+        cd $PODS_ROOT/CodeTeleport
+        app_path=$(find . -name 'CodeTeleport.app')
 
-        app_path="\$PODS_ROOT/CodeTeleport/CodeTeleport.app"
-        if [ -f $app_path ] then
+        if [ -z "$app_path" ]; then 
+            echo "CodeTeleport.app not found" 
+        else
             tmp_path="/tmp/com.zhaolei.CodeTeleport"
-            if [ ! -d $tmp_path ]; then
+            if [ ! -d $tmp_path ] ; then
                 mkdir $tmp_path
             fi
 
             echo save build enviroment to $tmp_path/build_enviroment.configs.
 
-            printf "$SRCROOT#$DEVELOPER_DIR#$BUILD_DIR#$DT_TOOLCHAIN_DIR#$PLATFORM_DEVELOPER_SDK_DIR#$TARGET_DEVICE_OS_VERSION#$CURRENT_ARCH#$TARGET_DEVICE_IDENTIFIER" > $tmp_path/build_enviroment.configs
+            printf "$SRCROOT\#$DEVELOPER_DIR\#$BUILD_DIR\#$DT_TOOLCHAIN_DIR\#$PLATFORM_DEVELOPER_SDK_DIR\#$TARGET_DEVICE_OS_VERSION\#$CURRENT_ARCH\#$TARGET_DEVICE_IDENTIFIER" > $tmp_path/build_enviroment.configs
 
             echo "open $app_path"
             open $app_path
         fi
-
         EOS
         script_phase.show_env_vars_in_log = "0"
     end
 
     xcodeproj.save
-end
+end'

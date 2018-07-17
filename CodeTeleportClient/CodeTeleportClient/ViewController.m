@@ -27,19 +27,41 @@ void test(){
 
 @implementation ViewController
 
+#ifdef DEBUG
 - (instancetype)init
 {
     self = [super init];
     if (self) {
-        NSLog(@"init:------------6");
+        NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+        [notificationCenter addObserver:self
+                               selector:@selector(codeteleport_completed) name:@"kCodeTeleportCompletedNotification"
+                                 object:nil];
     }
     return self;
 }
-  
+
+- (void)dealloc
+{
+    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter removeObserver:self
+                                  name:@"kCodeTeleportCompletedNotification"
+                                object:nil];
+}
+
+- (void)codeteleport_completed
+{
+    for (UIView *subView in self.view.subviews) {
+        [subView removeFromSuperview];
+    }
+    [self viewDidLoad];
+}
+
+#endif
+
 - (void)log
 {
     NSLog(@"logloglogloglog:6");
-    [self.button setTitle:@"add testVC5" forState:UIControlStateNormal];
+    [self.button setTitle:@"add testVC9" forState:UIControlStateNormal];
 }
 
 - (void)aui_isKindOfClass:(id) sender
@@ -63,14 +85,6 @@ void test(){
 //    [CodeTeleportLoader loadDylibWithPath:@"/private/tmp/com.zhaolei.CodeTeleport/BuildTask_552390664/codeTeleport_552390664.dylib"
 //                     classNames:@[@"TestOBJ"]];
     
-}
-
-- (void)codeteleport_completed
-{
-//    for (UIView *subView in self.view.subviews) {
-//        [subView removeFromSuperview];
-//    }
-//    [self viewDidLoad];
 }
 
 - (void)buttonClicked:(id)sender { 
