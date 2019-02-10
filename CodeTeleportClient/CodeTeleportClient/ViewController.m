@@ -61,7 +61,7 @@ void test(){
 - (void)log
 {
     NSLog(@"logloglogloglog:6");
-    [self.button setTitle:@"add testVC9" forState:UIControlStateNormal];
+    [self.button setTitle:@"add testVC123" forState:UIControlStateNormal];
 }
 
 - (void)aui_isKindOfClass:(id) sender

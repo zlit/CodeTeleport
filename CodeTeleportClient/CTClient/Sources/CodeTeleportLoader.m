@@ -148,7 +148,18 @@ IMP dylibHandleClassInitIMP(){
 {
     char class_symbol_name[256];
     sprintf(class_symbol_name, "OBJC_CLASS_$_%s", [className cStringUsingEncoding:NSUTF8StringEncoding]);
+    
+    dlerror();
+    
     Class class = (__bridge Class)(dlsym(dylib, class_symbol_name));
+    
+    
+    char *err;
+    if ((err = dlerror()) != NULL)
+    {
+        CTLog(@"dlsym error:%s",err);
+    }
+    
     CTLog(@"class_symbol_name:%s,address: %p",class_symbol_name,class);
     return class;
 }

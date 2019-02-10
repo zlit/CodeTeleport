@@ -308,7 +308,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "tmp_path=\"/tmp/com.zhaolei.CodeTeleport\"\nif [ ! -d $tmp_path ]; then\nmkdir $tmp_path\nfi\n\nprintf \"$SRCROOT#$DEVELOPER_DIR#$BUILD_DIR#$DT_TOOLCHAIN_DIR#$PLATFORM_DEVELOPER_SDK_DIR#$TARGET_DEVICE_OS_VERSION#$CURRENT_ARCH#$TARGET_DEVICE_IDENTIFIER\" > $tmp_path/build_enviroment.configs";
+			shellScript = "tmp_path=\"/tmp/com.zhaolei.CodeTeleport\"\nif [ ! -d $tmp_path ]; then\nmkdir $tmp_path\nfi\n\nprintf \"$SRCROOT#$DEVELOPER_DIR#$BUILD_DIR#$DT_TOOLCHAIN_DIR#$PLATFORM_DEVELOPER_SDK_DIR#$TARGET_DEVICE_OS_VERSION#$NATIVE_ARCH_ACTUAL#$TARGET_DEVICE_IDENTIFIER\" > $tmp_path/build_enviroment.configs\n\nenv\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -463,6 +463,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = A72S6ZQF4S;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				INFOPLIST_FILE = CodeTeleportClient/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -481,6 +484,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = A72S6ZQF4S;
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				INFOPLIST_FILE = CodeTeleportClient/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = (

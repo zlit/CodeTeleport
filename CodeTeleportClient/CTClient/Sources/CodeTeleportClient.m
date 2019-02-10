@@ -99,7 +99,7 @@ static GCDAsyncSocket *_asyncSocket;
 @implementation CodeTeleportClient
 
 +(void)load{
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         CTLog(@"CodeTeleportClient load. Avoid affecting startup performance,dispatch_after 5s.");
         [CodeTeleportClient connectToServer];
     });

@@ -218,7 +218,7 @@ static int kThreadIndex = 1;
 
 - (NSString *)runScriptCommand:(NSString *)modifyFile
 {
-    return [NSString stringWithFormat:@"time(python %@ %@ %@ %@ %@)",self.scriptPath,self.derivedLogs,modifyFile,self.projectPath,_compileCommandPath];
+    return [NSString stringWithFormat:@"time(python %@ %@ %@ %@ %@ %@)",self.scriptPath,self.derivedLogs,modifyFile,self.projectPath,_compileCommandPath,_arch];
 }
 
 - (NSString *)archDylibCommand:(NSMutableArray *) compileFileList

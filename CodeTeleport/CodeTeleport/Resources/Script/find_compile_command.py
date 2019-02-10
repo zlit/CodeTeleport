@@ -76,6 +76,7 @@ if __name__ == "__main__":
     FILE_PATH = sys.argv[2]
     PROJECT_PATH = sys.argv[3]
     TEMP_FILE_PATH = sys.argv[4]
+    ARCH = sys.argv[5]
 
 
     print 'LOGS_DIR : '+LOGS_DIR
@@ -90,9 +91,14 @@ if __name__ == "__main__":
     read_lines = read_content.splitlines()
     print len(read_lines)
     for tmp_line in read_lines:
-        if FILE_PATH in tmp_line and '-arch' in tmp_line:
+        if FILE_PATH in tmp_line and '-arch '+ ARCH in tmp_line:
             splitArray = tmp_line.split(' -o ')
-            compile_command = splitArray[0] 
+            compile_command = splitArray[0]
+
+    if '-fvisibility=hidden' in compile_command:
+        print "compile_command has -fvisibility=hidden,replace it with blank"
+        compile_command = compile_command.replace('-fvisibility=hidden','')
+
     print "compile_command : "+compile_command
     compile_command = "cd " + PROJECT_PATH + " && " + compile_command
 
