@@ -1,5 +1,3 @@
-PACKAGE = "com.zhaoleili.CodeTeleport"
-
 Pod::Spec.new do |s|
 
   s.name         = "CodeTeleport"
@@ -15,11 +13,11 @@ Pod::Spec.new do |s|
   s.author       = { "joesense" => "zhaoleili@icloud.com" }
   s.platform     = :ios, '8.0'
   s.ios.deployment_target = '8.0'
-
-  s.source = { :https => 'https://github.com/zlit/CodeTeleport/tree/beta_1.0/Output', :branch => "beta_1.0" }
+  s.source = { :git => 'https://github.com/zlit/CodeTeleport.git', :branch => "beta_1.0" }
   s.frameworks = 'Foundation'
   s.requires_arc = true
-  s.xcconfig = { 'FRAMEWORK_SEARCH_PATHS' => '$(PODS_ROOT)/CodeTeleport' }
-  s.prepare_command = 'bash CocoapodsPrepareCommand.sh'
+  s.xcconfig = { 'FRAMEWORK_SEARCH_PATHS' => '$(PODS_ROOT)/CodeTeleport' 
+  s.vendored_frameworks = 'Output/CTClient.framework'
+  s.prepare_command = 'bash CTClient.framework/CocoapodsPrepareCommand.sh'
 
 end
