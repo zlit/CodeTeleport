@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   s.platform     = :ios, '8.0'
   s.ios.deployment_target = '8.0'
 
-  s.source = { :http => '' }
+  s.source = { :https => 'https://github.com/zlit/CodeTeleport/tree/beta_1.0/Output', :branch => "beta_1.0" }
   s.frameworks = 'Foundation'
   s.requires_arc = true
   s.xcconfig = { 'FRAMEWORK_SEARCH_PATHS' => '$(PODS_ROOT)/CodeTeleport' }
