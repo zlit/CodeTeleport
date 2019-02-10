@@ -36,7 +36,7 @@
     NSString *text = [[url host] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSLog(@"%@",text);
     
-    ViewController *vc = [ViewController new];
+    ViewController *vc = [[ViewController alloc] initWithArg:5];
     [self.navigationController pushViewController:vc animated:NO];
     return YES; 
 } 

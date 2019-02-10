@@ -18,7 +18,7 @@ void test(){
 }
 
 @interface ViewController (){
-    int testVar;
+    int _testVar;
 }
 
 @property (strong, nonatomic) UIButton *button;
@@ -27,15 +27,29 @@ void test(){
 
 @implementation ViewController
 
-#ifdef DEBUG
+
+- (instancetype)initWithArg:(int) arg
+{
+    self = [super init];
+    if (self) {
+        _testVar = arg;
+    }
+    return self;
+}
+
++ (void)logClassMethod
+{
+    
+}
+
 - (instancetype)init
 {
     self = [super init];
     if (self) {
-        NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-        [notificationCenter addObserver:self
-                               selector:@selector(codeteleport_completed) name:@"kCodeTeleportCompletedNotification"
-                                 object:nil];
+//        NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+//        [notificationCenter addObserver:self
+//                               selector:@selector(codeteleport_completed) name:@"kCodeTeleportCompletedNotification"
+//                                 object:nil];
     }
     return self;
 }
@@ -56,12 +70,11 @@ void test(){
     [self viewDidLoad];
 }
 
-#endif
 
-- (void)log
++ (void)log:(UIButton *) button
 {
     NSLog(@"logloglogloglog:6");
-    [self.button setTitle:@"add testVC123" forState:UIControlStateNormal];
+    [button setTitle:@"add testVC" forState:UIControlStateNormal];
 }
 
 - (void)aui_isKindOfClass:(id) sender
@@ -77,8 +90,8 @@ void test(){
     [self.button addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
     self.button.frame = CGRectMake(100, 50, 100, 50);
     [self.view addSubview:self.button];
-    testVar = 5; 
-    [self log];
+    _testVar = 5; 
+    [ViewController log:self.button];
     [self aui_isKindOfClass:nil];
     // Do any additional setup after loading the view, typically from a nib.
 //       5
