@@ -13,7 +13,7 @@ Pod::Spec.new do |s|
   s.author       = { "joesense" => "zhaoleili@icloud.com" }
   s.platform     = :ios, '8.0'
   s.ios.deployment_target = '8.0'
-  s.source = { :git => 'https://github.com/zlit/CodeTeleport.git', :tag => "0.0.1" }
+  s.source = { :git => 'https://github.com/zlit/CodeTeleport.git', :branch => "podspec_test" }
   s.frameworks = 'Foundation'
   s.requires_arc = true
   s.xcconfig = { 'FRAMEWORK_SEARCH_PATHS' => '$(PODS_ROOT)/CodeTeleport' }
