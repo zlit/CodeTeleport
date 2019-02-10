@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Add Build Phase 'CodeTeleport Script'
+echo "Excute CocoapodsPrepareCommand."
 ruby -e 'require "rubygems"
 require "xcodeproj"
 
@@ -50,7 +51,7 @@ projects.each do|project|
 
             echo save build enviroment to $tmp_path/build_enviroment.configs.
 
-            printf "$SRCROOT\#$DEVELOPER_DIR\#$BUILD_DIR\#$DT_TOOLCHAIN_DIR\#$PLATFORM_DEVELOPER_SDK_DIR\#$TARGET_DEVICE_OS_VERSION\#$CURRENT_ARCH\#$TARGET_DEVICE_IDENTIFIER" > $tmp_path/build_enviroment.configs
+            printf "$SRCROOT\#$DEVELOPER_DIR\#$BUILD_DIR\#$DT_TOOLCHAIN_DIR\#$PLATFORM_DEVELOPER_SDK_DIR\#$TARGET_DEVICE_OS_VERSION\#$NATIVE_ARCH_ACTUAL\#$TARGET_DEVICE_IDENTIFIER" > $tmp_path/build_enviroment.configs
 
             echo "open $app_path"
             open $app_path

@@ -1,7 +1,7 @@
 #!/bin/sh
 
-CTClientPath="/Users/zhaolei/Library/Developer/Xcode/DerivedData/CodeTeleportClient-akavrjbpnqjaxqaqxnpkoloawdyo/Build/Products/Release-iphonesimulator/CTClient.framework"
-CTServerPath="/Users/zhaolei/Library/Developer/Xcode/DerivedData/CodeTeleport-evsrcdavqhsamqcgolxuvfmkxaay/Build/Products/Release/CodeTeleport.app"
+CTClientPath="/Users/zhaolei/Library/Developer/Xcode/DerivedData/CodeTeleportClient-ghdeygqccwijguaxjiaoszibcehp/Build/Products/Release-iphonesimulator/CTClient.framework"
+CTServerPath="/Users/zhaolei/Library/Developer/Xcode/DerivedData/CodeTeleport-guzzkfbfrkjevnailjpznyuucrhl/Build/Products/Debug/CodeTeleport.app"
 
 if [ ! -d $CTClientPath ]; then
 	echo 'CTClientPath不存在'
