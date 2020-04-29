@@ -19,6 +19,9 @@
 #define kReplaceOldClassSwitch @"kReplaceOldClassSwitch"
 #define kReplaceOldClassBlackList @"kReplaceOldClassBlackList"
 
+#define kMonitorPath @"monitorPath"
+#define kMonitorPathSwitch @"monitorPathSwitch"
+
 @interface AppDelegate () <NSTextFieldDelegate>
 - (IBAction)trigger:(id)sender;
 - (IBAction)completedAction:(id)sender;
@@ -33,6 +36,8 @@
 @property (weak) IBOutlet NSButton *urlCheckBox;
 @property (weak) IBOutlet NSTextField *notificationInput;
 @property (weak) IBOutlet NSTextField *urlInput;
+@property (weak) IBOutlet NSButton *monitorPathCheckBox;
+@property (weak) IBOutlet NSTextField *monitorPathInput;
 
 @end
 
@@ -49,17 +54,31 @@
     self.urlCheckBox.state = [[NSUserDefaults standardUserDefaults] boolForKey:kUrlSchemeSwitch];
     
     //urlInput
-    [self.urlInput setDelegate:self];
     self.urlInput.stringValue = [[NSUserDefaults standardUserDefaults] stringForKey:kUrlScheme];
     self.urlScheme = self.urlInput.stringValue;
+    [self.urlInput setDelegate:self];
     
     //notificationCheckBox
     [self.notificationCheckBox setAction:@selector(notificationCheckBoxAction:)];
-    self.notificationInput.stringValue = [[NSUserDefaults standardUserDefaults] stringForKey:kReplaceOldClassBlackList];
     self.notificationCheckBox.state = [[NSUserDefaults standardUserDefaults] boolForKey:kReplaceOldClassSwitch];
-    [self.notificationInput setDelegate:self];
-    self.replaceBlackList = self.notificationInput.stringValue;
     self.replaceOldClassSwitch = self.notificationCheckBox.state;
+    [self.notificationInput setDelegate:self];
+    
+    if([[NSUserDefaults standardUserDefaults] stringForKey:kReplaceOldClassBlackList].length > 0){
+        self.notificationInput.stringValue = [[NSUserDefaults standardUserDefaults] stringForKey:kReplaceOldClassBlackList];
+        self.replaceBlackList = self.notificationInput.stringValue;
+    }
+    
+    //monitorPathCheckBox
+    [self.monitorPathCheckBox setAction:@selector(monitorPathCheckBoxAction:)];
+    self.monitorPathCheckBox.state = [[NSUserDefaults standardUserDefaults] boolForKey:kMonitorPathSwitch];
+    
+    //monitorPathInput
+    if([[NSUserDefaults standardUserDefaults] stringForKey:kMonitorPath].length > 0){
+        self.monitorPathInput.stringValue = [[NSUserDefaults standardUserDefaults] stringForKey:kMonitorPath];
+        self.monitorFilePath = self.monitorPathInput.stringValue;
+    }
+    [self.monitorPathInput setDelegate:self];
     
     //completedNotice
     self.completedNotice.animationBehavior = NSWindowAnimationBehaviorAlertPanel;
@@ -89,13 +108,17 @@
 - (void)controlTextDidEndEditing:(NSNotification *)notification {
     NSTextField *textField = [notification object];
     if(self.urlInput == textField){
-        [[NSUserDefaults standardUserDefaults] setObject:self.urlInput.stringValue forKey:kUrlScheme];
-        if(self.urlCheckBox.state == YES){
-            self.urlScheme = self.urlInput.stringValue;
-        }
-    }else{
-        [[NSUserDefaults standardUserDefaults] setObject:self.replaceBlackList forKey:kReplaceOldClassBlackList];
+        self.urlCheckBox.state = NO;
+        [[NSUserDefaults standardUserDefaults] setObject:textField.stringValue forKey:kUrlScheme];
+        self.urlScheme = textField.stringValue;
+    }else if(self.notificationInput == textField){
+        self.notificationCheckBox.state = NO;
+        [[NSUserDefaults standardUserDefaults] setObject:textField.stringValue forKey:kReplaceOldClassBlackList];
         self.replaceBlackList = textField.stringValue;
+    }else if(self.monitorPathInput == textField){
+        self.monitorPathCheckBox.state = NO;
+        [[NSUserDefaults standardUserDefaults] setObject:textField.stringValue forKey:kMonitorPath];
+        self.monitorFilePath = textField.stringValue;
     }
 }
 
@@ -106,6 +129,35 @@
     self.replaceBlackList = self.notificationInput.stringValue;
     [[NSUserDefaults standardUserDefaults] setBool:sender.state forKey:kReplaceOldClassSwitch];
     [[NSUserDefaults standardUserDefaults] setObject:self.replaceBlackList forKey:kReplaceOldClassBlackList];
+}
+
+-(void)monitorPathCheckBoxAction:(NSButton *)sender
+{
+    if(sender.state == YES){
+        if(self.monitorPathInput.stringValue.length == 0){
+            NSAlert *alert = [[NSAlert alloc] init];
+            [alert setMessageText:@"Please enter Monitor Path first."];
+            [alert runModal];
+            sender.state = NO;
+            return;
+        }else{
+            self.monitorFilePath = self.monitorPathInput.stringValue;
+        }
+    }else{
+        self.monitorFilePath = @"";
+    }
+    [[NSUserDefaults standardUserDefaults] setObject:self.monitorFilePath forKey:kMonitorPath];
+    [[NSUserDefaults standardUserDefaults] setBool:sender.state forKey:kMonitorPathSwitch];
+    
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    NSAlert *alert = [[NSAlert alloc] init];
+    [alert setMessageText:@"Monitor Path changed, app will restart."];
+    [alert runModal];
+    
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self quit:nil];
+//    });
 }
 
 -(void)urlCheckBoxAction:(NSButton *)sender

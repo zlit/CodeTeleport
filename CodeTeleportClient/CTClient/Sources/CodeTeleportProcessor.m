@@ -50,11 +50,15 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 NSError *error;
                 
+//                [CodeTeleportLoader loadDylibWithPath:dylibPath
+//                                           classNames:classNames
+//                                                error:&error
+//                                replaceOldClassMethod:replaceOldClassMethod
+//                                     replaceBlackList:replaceBlackList];
+                
                 [CodeTeleportLoader loadDylibWithPath:dylibPath
                                            classNames:classNames
-                                                error:&error
-                                replaceOldClassMethod:replaceOldClassMethod
-                                     replaceBlackList:replaceBlackList];
+                                                error:&error];
                 
                 if(error == nil){
                     [[NSNotificationCenter defaultCenter] postNotificationName:kCodeTeleportCompletedNotification

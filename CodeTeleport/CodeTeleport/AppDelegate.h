@@ -19,6 +19,8 @@ typedef enum : NSUInteger {
 @property(nonatomic,copy) NSString *replaceBlackList;
 @property(nonatomic,assign) BOOL replaceOldClassSwitch;
 
+@property(nonatomic,copy) NSString *monitorFilePath;
+
 - (void)setStatusIcon:(StatusIconType) state;
 - (void)showCompeledNotice:(NSString *)notice;
 

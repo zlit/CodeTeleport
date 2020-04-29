@@ -46,10 +46,10 @@ void test(){
 {
     self = [super init];
     if (self) {
-//        NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-//        [notificationCenter addObserver:self
-//                               selector:@selector(codeteleport_completed) name:@"kCodeTeleportCompletedNotification"
-//                                 object:nil];
+        NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+        [notificationCenter addObserver:self
+                               selector:@selector(codeteleport_completed) name:@"kCodeTeleportCompletedNotification"
+                                 object:nil];
     }
     return self;
 }
@@ -74,7 +74,7 @@ void test(){
 + (void)log:(UIButton *) button
 {
     NSLog(@"logloglogloglog:6");
-    [button setTitle:@"add testVC" forState:UIControlStateNormal];
+    [button setTitle:@"add VC" forState:UIControlStateNormal];
 }
 
 - (void)aui_isKindOfClass:(id) sender

@@ -100,9 +100,27 @@
     
     if([args count] >=8){
         NSInteger argIndex = 0;
-        [self.builder setArg:[args objectAtIndex:argIndex]
-                  toProperty:@"projectPath"
-                 isDirectory:YES];
+
+        NSString *customProjectPath = @"";
+        if(appdelegate().monitorFilePath.length > 0){
+            BOOL isDirectory = NO;
+            BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:appdelegate().monitorFilePath
+                                                                   isDirectory:&isDirectory];
+            if(fileExists
+               && isDirectory){
+                customProjectPath = appdelegate().monitorFilePath;
+            }
+        }
+        ///Users/zhaolei/Documents/demo/CodeTeleport_new/CodeTeleportClient
+        if(customProjectPath.length > 0){
+            [self.builder setArg:customProjectPath
+                      toProperty:@"projectPath"
+                     isDirectory:YES];
+        }else{
+            [self.builder setArg:[args objectAtIndex:argIndex]
+                      toProperty:@"projectPath"
+                     isDirectory:YES];
+        }
         
         [self.builder setArg:[args objectAtIndex:++argIndex]
                   toProperty:@"xcodeDev"

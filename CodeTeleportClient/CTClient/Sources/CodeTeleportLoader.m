@@ -50,6 +50,48 @@ static void *dylibHandle;
 + (void)loadDylibWithPath:(NSString *) path
                classNames:(NSArray *) classNames
                     error:(NSError **) error
+{
+    if ([[NSFileManager defaultManager] fileExistsAtPath:path] == NO) {
+        *error = CTError(@"%@ is not exist.",path);
+        return;
+    }
+    
+    // dispatch to main thread, because maybe class +load +initialize require;
+    const char *dylibCString = [path cStringUsingEncoding:NSUTF8StringEncoding];
+    
+    dylibHandle = dlopen(dylibCString, RTLD_NOW | RTLD_GLOBAL);
+    
+    if (dylibHandle == NULL) {
+        *error = CTError(@"open dylib error: %s.", dlerror());
+        return;
+    }
+    
+    CTLog(@"image opened");
+    
+    for (NSUInteger class_index=0; class_index < [classNames count]; class_index++) {
+        // load symbol
+        NSString *className = [classNames objectAtIndex:class_index];
+        
+        Class class = [CodeTeleportLoader getClassWithDylib:dylibHandle
+                                                  className:className];
+        Class oldClass = NSClassFromString(className);
+        if (class && oldClass) {
+          
+            [CodeTeleportLoader replaceMethodFrom:object_getClass(class)
+                                          toClass:object_getClass(oldClass)
+                                 replaceBlackList:nil];
+            
+            [CodeTeleportLoader replaceMethodFrom:class
+                                          toClass:oldClass
+                                 replaceBlackList:nil];
+        }
+    }
+}
+
+
++ (void)loadDylibWithPath:(NSString *) path
+               classNames:(NSArray *) classNames
+                    error:(NSError **) error
     replaceOldClassMethod:(BOOL) replaceOldClassMethod
          replaceBlackList:(NSArray *) replaceBlackList
 {

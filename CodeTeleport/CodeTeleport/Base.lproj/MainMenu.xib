@@ -14,13 +14,15 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customObject id="Voe-Tx-rLC" customClass="AppDelegate">
             <connections>
-                <outlet property="UrlCheckBox" destination="7XF-Eo-1zH" id="av0-Yt-Zkq"/>
                 <outlet property="actionWindow" destination="e3Q-4u-tKx" id="76X-2l-M4j"/>
                 <outlet property="completedNotice" destination="gtE-pM-7H3" id="BkH-rH-N5R"/>
                 <outlet property="menu" destination="cEE-Lt-B4X" id="cll-ag-UC2"/>
+                <outlet property="monitorPathCheckBox" destination="cbn-G9-gjS" id="rpX-Ag-QPS"/>
+                <outlet property="monitorPathInput" destination="Cy1-se-mE4" id="x4d-MY-Elv"/>
                 <outlet property="noticeText" destination="xXh-hQ-z4t" id="vW3-Se-tcT"/>
                 <outlet property="notificationCheckBox" destination="Kz9-Ky-t9T" id="HKL-L6-luN"/>
                 <outlet property="notificationInput" destination="izF-QY-nbR" id="kMi-r5-w5B"/>
+                <outlet property="urlCheckBox" destination="7XF-Eo-1zH" id="eSQ-Tx-EXw"/>
                 <outlet property="urlInput" destination="P4U-Qq-h0J" id="Xzh-Fl-dBD"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
             </connections>
@@ -724,22 +726,14 @@
         <window title="Completed Action" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" id="e3Q-4u-tKx">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="564" y="530" width="341" height="143"/>
+            <rect key="contentRect" x="564" y="530" width="353" height="147"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1440" height="877"/>
             <view key="contentView" id="y7A-wb-sK7">
-                <rect key="frame" x="0.0" y="0.0" width="341" height="143"/>
+                <rect key="frame" x="0.0" y="0.0" width="353" height="147"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Kz9-Ky-t9T">
-                        <rect key="frame" x="14" y="106" width="309" height="19"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <buttonCell key="cell" type="check" title="Replace Old Class Method Except BlackList" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="AU0-y7-cjM">
-                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                            <font key="font" metaFont="system"/>
-                        </buttonCell>
-                    </button>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7XF-Eo-1zH">
-                        <rect key="frame" x="14" y="46" width="129" height="18"/>
+                        <rect key="frame" x="18" y="111" width="129" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="check" title="Open Url Scheme" bezelStyle="regularSquare" imagePosition="left" inset="2" id="fCz-nC-jte">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -747,7 +741,7 @@
                         </buttonCell>
                     </button>
                     <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="P4U-Qq-h0J">
-                        <rect key="frame" x="37" y="18" width="287" height="22"/>
+                        <rect key="frame" x="41" y="83" width="287" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="codeteleport://startup" drawsBackground="YES" id="ugh-df-QYK">
                             <font key="font" metaFont="system"/>
@@ -755,10 +749,18 @@
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="izF-QY-nbR">
-                        <rect key="frame" x="37" y="78" width="287" height="22"/>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cbn-G9-gjS">
+                        <rect key="frame" x="18" y="48" width="178" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="method blackList , enter to work" drawsBackground="YES" id="n4q-NI-Lyx">
+                        <buttonCell key="cell" type="check" title="Monitor SourceCode Path" bezelStyle="regularSquare" imagePosition="left" inset="2" id="XGR-Et-d1F">
+                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                    </button>
+                    <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Cy1-se-mE4">
+                        <rect key="frame" x="41" y="20" width="287" height="22"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="mqj-hO-c5q">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -766,7 +768,7 @@
                     </textField>
                 </subviews>
             </view>
-            <point key="canvasLocation" x="-168.5" y="-521.5"/>
+            <point key="canvasLocation" x="-162.5" y="-519.5"/>
         </window>
         <window title="CodeTeleport Notice" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="alertPanel" frameAutosaveName="" id="gtE-pM-7H3" customClass="NSPanel">
             <windowStyleMask key="styleMask" titled="YES" utility="YES" HUD="YES"/>
@@ -790,5 +792,24 @@
             </view>
             <point key="canvasLocation" x="-291" y="-750"/>
         </window>
+        <button hidden="YES" verticalHuggingPriority="750" id="Kz9-Ky-t9T">
+            <rect key="frame" x="0.0" y="0.0" width="309" height="19"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <buttonCell key="cell" type="check" title="Replace Old Class Method Except BlackList" bezelStyle="regularSquare" imagePosition="left" inset="2" id="AU0-y7-cjM">
+                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                <font key="font" metaFont="system"/>
+            </buttonCell>
+            <point key="canvasLocation" x="-264" y="-694"/>
+        </button>
+        <textField hidden="YES" verticalHuggingPriority="750" id="izF-QY-nbR">
+            <rect key="frame" x="0.0" y="0.0" width="287" height="22"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="method blackList , enter to work" drawsBackground="YES" id="n4q-NI-Lyx">
+                <font key="font" metaFont="system"/>
+                <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+            </textFieldCell>
+            <point key="canvasLocation" x="-252" y="-667"/>
+        </textField>
     </objects>
 </document>
