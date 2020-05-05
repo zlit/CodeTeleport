@@ -32,9 +32,7 @@
 @property (weak) IBOutlet NSWindow *window;
 @property (strong, nonatomic) NSStatusItem *statusItem;
 @property (weak) IBOutlet NSWindow *actionWindow;
-@property (weak) IBOutlet NSButton *notificationCheckBox;
 @property (weak) IBOutlet NSButton *urlCheckBox;
-@property (weak) IBOutlet NSTextField *notificationInput;
 @property (weak) IBOutlet NSTextField *urlInput;
 @property (weak) IBOutlet NSButton *monitorPathCheckBox;
 @property (weak) IBOutlet NSTextField *monitorPathInput;
@@ -57,17 +55,6 @@
     self.urlInput.stringValue = [[NSUserDefaults standardUserDefaults] stringForKey:kUrlScheme];
     self.urlScheme = self.urlInput.stringValue;
     [self.urlInput setDelegate:self];
-    
-    //notificationCheckBox
-    [self.notificationCheckBox setAction:@selector(notificationCheckBoxAction:)];
-    self.notificationCheckBox.state = [[NSUserDefaults standardUserDefaults] boolForKey:kReplaceOldClassSwitch];
-    self.replaceOldClassSwitch = self.notificationCheckBox.state;
-    [self.notificationInput setDelegate:self];
-    
-    if([[NSUserDefaults standardUserDefaults] stringForKey:kReplaceOldClassBlackList].length > 0){
-        self.notificationInput.stringValue = [[NSUserDefaults standardUserDefaults] stringForKey:kReplaceOldClassBlackList];
-        self.replaceBlackList = self.notificationInput.stringValue;
-    }
     
     //monitorPathCheckBox
     [self.monitorPathCheckBox setAction:@selector(monitorPathCheckBoxAction:)];
@@ -111,24 +98,11 @@
         self.urlCheckBox.state = NO;
         [[NSUserDefaults standardUserDefaults] setObject:textField.stringValue forKey:kUrlScheme];
         self.urlScheme = textField.stringValue;
-    }else if(self.notificationInput == textField){
-        self.notificationCheckBox.state = NO;
-        [[NSUserDefaults standardUserDefaults] setObject:textField.stringValue forKey:kReplaceOldClassBlackList];
-        self.replaceBlackList = textField.stringValue;
     }else if(self.monitorPathInput == textField){
         self.monitorPathCheckBox.state = NO;
         [[NSUserDefaults standardUserDefaults] setObject:textField.stringValue forKey:kMonitorPath];
         self.monitorFilePath = textField.stringValue;
     }
-}
-
--(void)notificationCheckBoxAction:(NSButton *)sender
-{
-    self.replaceOldClassSwitch = sender.state;
-    self.notificationInput.editable = sender.state;
-    self.replaceBlackList = self.notificationInput.stringValue;
-    [[NSUserDefaults standardUserDefaults] setBool:sender.state forKey:kReplaceOldClassSwitch];
-    [[NSUserDefaults standardUserDefaults] setObject:self.replaceBlackList forKey:kReplaceOldClassBlackList];
 }
 
 -(void)monitorPathCheckBoxAction:(NSButton *)sender
@@ -154,10 +128,7 @@
     NSAlert *alert = [[NSAlert alloc] init];
     [alert setMessageText:@"Monitor Path changed, app will restart."];
     [alert runModal];
-    
-//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self quit:nil];
-//    });
+    [self quit:nil];
 }
 
 -(void)urlCheckBoxAction:(NSButton *)sender

@@ -30,12 +30,6 @@
         __weak CTProcessor *weakSelf = self;
         
         self.builder.buildCompletedBlock = ^(CTBuilder *builder, NSString *msg){
-            
-            msg = [msg stringByAppendingFormat:@"#%d",appdelegate().replaceOldClassSwitch];
-            if(appdelegate().replaceOldClassSwitch
-               && appdelegate().replaceBlackList.length > 0){
-                msg = [msg stringByAppendingFormat:@"|%@",appdelegate().replaceBlackList];
-            }
             [weakSelf writeResponse:@"TELEPORT " msg:msg];
         };
         

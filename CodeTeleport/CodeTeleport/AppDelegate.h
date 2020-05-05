@@ -16,8 +16,6 @@ typedef enum : NSUInteger {
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 
 @property(nonatomic,copy) NSString *urlScheme;
-@property(nonatomic,copy) NSString *replaceBlackList;
-@property(nonatomic,assign) BOOL replaceOldClassSwitch;
 
 @property(nonatomic,copy) NSString *monitorFilePath;
 

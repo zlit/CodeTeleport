@@ -8,7 +8,6 @@
 
 #import "AppDelegate.h"
 #import "ViewController.h"
-#import "TestOBJ.h"
 
 @interface AppDelegate ()
 
@@ -36,7 +35,7 @@
     NSString *text = [[url host] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSLog(@"%@",text);
     
-    ViewController *vc = [[ViewController alloc] initWithArg:5];
+    ViewController *vc = [[ViewController alloc] init];
     [self.navigationController pushViewController:vc animated:NO];
     return YES; 
 } 

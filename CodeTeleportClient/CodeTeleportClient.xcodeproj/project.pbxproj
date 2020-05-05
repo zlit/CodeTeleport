@@ -22,7 +22,6 @@
 		448EF74F20E8DD9C004549C1 /* CodeTeleportProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 448EF74D20E8DD9C004549C1 /* CodeTeleportProcessor.h */; };
 		448EF75C20EBA037004549C1 /* CodeTeleportLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = 448EF75A20EBA037004549C1 /* CodeTeleportLoader.h */; };
 		448EF75D20EBA037004549C1 /* CodeTeleportLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 448EF75B20EBA037004549C1 /* CodeTeleportLoader.m */; };
-		448EF76320ECD2F1004549C1 /* TestOBJ.m in Sources */ = {isa = PBXBuildFile; fileRef = 448EF76220ECD2F1004549C1 /* TestOBJ.m */; };
 		448EF76E20EF0253004549C1 /* CTClient.framework in Resources */ = {isa = PBXBuildFile; fileRef = 444301B220E6299F00BD9445 /* CTClient.framework */; };
 		448EF7E520F5FE9E004549C1 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 448EF7E420F5FE9E004549C1 /* Default-568h@2x.png */; };
 		44BFD7C120F8812F004263AB /* CTClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 444301B220E6299F00BD9445 /* CTClient.framework */; };
@@ -73,8 +72,6 @@
 		448EF74D20E8DD9C004549C1 /* CodeTeleportProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CodeTeleportProcessor.h; sourceTree = "<group>"; };
 		448EF75A20EBA037004549C1 /* CodeTeleportLoader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CodeTeleportLoader.h; sourceTree = "<group>"; };
 		448EF75B20EBA037004549C1 /* CodeTeleportLoader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CodeTeleportLoader.m; sourceTree = "<group>"; };
-		448EF76120ECD2F1004549C1 /* TestOBJ.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestOBJ.h; sourceTree = "<group>"; };
-		448EF76220ECD2F1004549C1 /* TestOBJ.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestOBJ.m; sourceTree = "<group>"; };
 		448EF7E420F5FE9E004549C1 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -120,8 +117,6 @@
 		4443013720E5F26B00BD9445 /* CodeTeleportClient */ = {
 			isa = PBXGroup;
 			children = (
-				448EF76120ECD2F1004549C1 /* TestOBJ.h */,
-				448EF76220ECD2F1004549C1 /* TestOBJ.m */,
 				4443013820E5F26B00BD9445 /* AppDelegate.h */,
 				4443013920E5F26B00BD9445 /* AppDelegate.m */,
 				4443013B20E5F26B00BD9445 /* ViewController.h */,
@@ -321,7 +316,6 @@
 				4443013D20E5F26B00BD9445 /* ViewController.m in Sources */,
 				4443014820E5F26D00BD9445 /* main.m in Sources */,
 				4443013A20E5F26B00BD9445 /* AppDelegate.m in Sources */,
-				448EF76320ECD2F1004549C1 /* TestOBJ.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
