@@ -33,7 +33,7 @@ static int kThreadIndex = 1;
 @property(nonatomic,copy) NSString *buildTaskPath;
 @property(nonatomic,copy) NSString *timestamp;
 @property(nonatomic,strong) NSMutableDictionary *compileCommandCache;
-
+@property(nonatomic,strong) NSString *compileCommandTemplate;
 @end
 
 @implementation CTBuilder
@@ -133,6 +133,13 @@ static int kThreadIndex = 1;
         
         NSString * compileCommand = [self.compileCommandCache objectForKey:modifyFile];
         // TODO: add disk cache
+        
+        if (compileCommand.length == 0
+            && self.compileCommandTemplate.length > 0) {
+            [compileCommand stringByReplacingOccurrencesOfString:@"-_-_-_template_-_-_-"
+                                                      withString:modifyFile];
+        }
+        
         if(compileCommand.length == 0){
             NSError *error;
             compileCommand = [self findCompileCommand:modifyFile
@@ -149,6 +156,9 @@ static int kThreadIndex = 1;
         
         BOOL result = [CTUtils executeShellCommand:executeCommand];
         if(result){
+            
+            self.compileCommandTemplate = [compileCommand stringByReplacingOccurrencesOfString:modifyFile withString:@"-_-_-_template_-_-_-"];
+            
                 [self.compileCommandCache setObject:compileCommand
                                              forKey:modifyFile];
                 [compileFileList addObject:_compileExecutablePath];
