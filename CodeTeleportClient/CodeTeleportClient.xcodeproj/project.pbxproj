@@ -11,9 +11,6 @@
 		4443013D20E5F26B00BD9445 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4443013C20E5F26B00BD9445 /* ViewController.m */; };
 		4443014220E5F26D00BD9445 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4443014120E5F26D00BD9445 /* Assets.xcassets */; };
 		4443014820E5F26D00BD9445 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4443014720E5F26D00BD9445 /* main.m */; };
-		444301CB20E629EE00BD9445 /* Documentation.html in Resources */ = {isa = PBXBuildFile; fileRef = 444301C120E629EE00BD9445 /* Documentation.html */; };
-		444301CC20E629EE00BD9445 /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 444301C220E629EE00BD9445 /* GCDAsyncSocket.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		444301CD20E629EE00BD9445 /* GCDAsyncSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = 444301C320E629EE00BD9445 /* GCDAsyncSocket.h */; };
 		444301CF20E629EE00BD9445 /* CodeTeleportUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 444301C620E629EE00BD9445 /* CodeTeleportUtils.m */; };
 		444301D020E629EE00BD9445 /* CodeTeleportUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 444301C720E629EE00BD9445 /* CodeTeleportUtils.h */; };
 		444301D620E62A0F00BD9445 /* CodeTeleportClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 444301D420E62A0F00BD9445 /* CodeTeleportClient.h */; };
@@ -25,6 +22,17 @@
 		448EF76E20EF0253004549C1 /* CTClient.framework in Resources */ = {isa = PBXBuildFile; fileRef = 444301B220E6299F00BD9445 /* CTClient.framework */; };
 		448EF7E520F5FE9E004549C1 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 448EF7E420F5FE9E004549C1 /* Default-568h@2x.png */; };
 		44BFD7C120F8812F004263AB /* CTClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 444301B220E6299F00BD9445 /* CTClient.framework */; };
+		44CE9BD52483B3140058BF23 /* Documentation.html in Resources */ = {isa = PBXBuildFile; fileRef = 44CE9BC92483B3140058BF23 /* Documentation.html */; };
+		44CE9BD62483B3140058BF23 /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 44CE9BCA2483B3140058BF23 /* GCDAsyncSocket.m */; };
+		44CE9BD72483B3140058BF23 /* GCDAsyncSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = 44CE9BCB2483B3140058BF23 /* GCDAsyncSocket.h */; };
+		44CE9BD82483B3140058BF23 /* PTUSBHub.m in Sources */ = {isa = PBXBuildFile; fileRef = 44CE9BCD2483B3140058BF23 /* PTUSBHub.m */; };
+		44CE9BD92483B3140058BF23 /* PTProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 44CE9BCE2483B3140058BF23 /* PTProtocol.m */; };
+		44CE9BDA2483B3140058BF23 /* Peertalk.h in Headers */ = {isa = PBXBuildFile; fileRef = 44CE9BCF2483B3140058BF23 /* Peertalk.h */; };
+		44CE9BDB2483B3140058BF23 /* PTChannel.m in Sources */ = {isa = PBXBuildFile; fileRef = 44CE9BD02483B3140058BF23 /* PTChannel.m */; };
+		44CE9BDC2483B3140058BF23 /* PTPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 44CE9BD12483B3140058BF23 /* PTPrivate.h */; };
+		44CE9BDD2483B3140058BF23 /* PTProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 44CE9BD22483B3140058BF23 /* PTProtocol.h */; };
+		44CE9BDE2483B3140058BF23 /* PTUSBHub.h in Headers */ = {isa = PBXBuildFile; fileRef = 44CE9BD32483B3140058BF23 /* PTUSBHub.h */; };
+		44CE9BDF2483B3140058BF23 /* PTChannel.h in Headers */ = {isa = PBXBuildFile; fileRef = 44CE9BD42483B3140058BF23 /* PTChannel.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,9 +69,6 @@
 		4443014720E5F26D00BD9445 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		444301B220E6299F00BD9445 /* CTClient.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CTClient.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		444301B520E6299F00BD9445 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		444301C120E629EE00BD9445 /* Documentation.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = Documentation.html; sourceTree = "<group>"; };
-		444301C220E629EE00BD9445 /* GCDAsyncSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDAsyncSocket.m; sourceTree = "<group>"; };
-		444301C320E629EE00BD9445 /* GCDAsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDAsyncSocket.h; sourceTree = "<group>"; };
 		444301C620E629EE00BD9445 /* CodeTeleportUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CodeTeleportUtils.m; sourceTree = "<group>"; };
 		444301C720E629EE00BD9445 /* CodeTeleportUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CodeTeleportUtils.h; sourceTree = "<group>"; };
 		444301D420E62A0F00BD9445 /* CodeTeleportClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CodeTeleportClient.h; sourceTree = "<group>"; };
@@ -73,6 +78,17 @@
 		448EF75A20EBA037004549C1 /* CodeTeleportLoader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CodeTeleportLoader.h; sourceTree = "<group>"; };
 		448EF75B20EBA037004549C1 /* CodeTeleportLoader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CodeTeleportLoader.m; sourceTree = "<group>"; };
 		448EF7E420F5FE9E004549C1 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		44CE9BC92483B3140058BF23 /* Documentation.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = Documentation.html; sourceTree = "<group>"; };
+		44CE9BCA2483B3140058BF23 /* GCDAsyncSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDAsyncSocket.m; sourceTree = "<group>"; };
+		44CE9BCB2483B3140058BF23 /* GCDAsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDAsyncSocket.h; sourceTree = "<group>"; };
+		44CE9BCD2483B3140058BF23 /* PTUSBHub.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTUSBHub.m; sourceTree = "<group>"; };
+		44CE9BCE2483B3140058BF23 /* PTProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTProtocol.m; sourceTree = "<group>"; };
+		44CE9BCF2483B3140058BF23 /* Peertalk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Peertalk.h; sourceTree = "<group>"; };
+		44CE9BD02483B3140058BF23 /* PTChannel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTChannel.m; sourceTree = "<group>"; };
+		44CE9BD12483B3140058BF23 /* PTPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTPrivate.h; sourceTree = "<group>"; };
+		44CE9BD22483B3140058BF23 /* PTProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTProtocol.h; sourceTree = "<group>"; };
+		44CE9BD32483B3140058BF23 /* PTUSBHub.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTUSBHub.h; sourceTree = "<group>"; };
+		44CE9BD42483B3140058BF23 /* PTChannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTChannel.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,7 +156,7 @@
 		444301BF20E629EE00BD9445 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				444301C020E629EE00BD9445 /* GCDAsyncSocket */,
+				44CE9BC72483B3140058BF23 /* Dependent */,
 				444301C520E629EE00BD9445 /* Utils */,
 				444301D420E62A0F00BD9445 /* CodeTeleportClient.h */,
 				444301D520E62A0F00BD9445 /* CodeTeleportClient.m */,
@@ -150,16 +166,6 @@
 				448EF75B20EBA037004549C1 /* CodeTeleportLoader.m */,
 			);
 			path = Sources;
-			sourceTree = "<group>";
-		};
-		444301C020E629EE00BD9445 /* GCDAsyncSocket */ = {
-			isa = PBXGroup;
-			children = (
-				444301C120E629EE00BD9445 /* Documentation.html */,
-				444301C220E629EE00BD9445 /* GCDAsyncSocket.m */,
-				444301C320E629EE00BD9445 /* GCDAsyncSocket.h */,
-			);
-			path = GCDAsyncSocket;
 			sourceTree = "<group>";
 		};
 		444301C520E629EE00BD9445 /* Utils */ = {
@@ -178,6 +184,40 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		44CE9BC72483B3140058BF23 /* Dependent */ = {
+			isa = PBXGroup;
+			children = (
+				44CE9BC82483B3140058BF23 /* GCDAsyncSocket */,
+				44CE9BCC2483B3140058BF23 /* PTChannel */,
+			);
+			path = Dependent;
+			sourceTree = "<group>";
+		};
+		44CE9BC82483B3140058BF23 /* GCDAsyncSocket */ = {
+			isa = PBXGroup;
+			children = (
+				44CE9BC92483B3140058BF23 /* Documentation.html */,
+				44CE9BCA2483B3140058BF23 /* GCDAsyncSocket.m */,
+				44CE9BCB2483B3140058BF23 /* GCDAsyncSocket.h */,
+			);
+			path = GCDAsyncSocket;
+			sourceTree = "<group>";
+		};
+		44CE9BCC2483B3140058BF23 /* PTChannel */ = {
+			isa = PBXGroup;
+			children = (
+				44CE9BCD2483B3140058BF23 /* PTUSBHub.m */,
+				44CE9BCE2483B3140058BF23 /* PTProtocol.m */,
+				44CE9BCF2483B3140058BF23 /* Peertalk.h */,
+				44CE9BD02483B3140058BF23 /* PTChannel.m */,
+				44CE9BD12483B3140058BF23 /* PTPrivate.h */,
+				44CE9BD22483B3140058BF23 /* PTProtocol.h */,
+				44CE9BD32483B3140058BF23 /* PTUSBHub.h */,
+				44CE9BD42483B3140058BF23 /* PTChannel.h */,
+			);
+			path = PTChannel;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -185,10 +225,15 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				444301CD20E629EE00BD9445 /* GCDAsyncSocket.h in Headers */,
+				44CE9BDD2483B3140058BF23 /* PTProtocol.h in Headers */,
 				444301D020E629EE00BD9445 /* CodeTeleportUtils.h in Headers */,
+				44CE9BD72483B3140058BF23 /* GCDAsyncSocket.h in Headers */,
+				44CE9BDE2483B3140058BF23 /* PTUSBHub.h in Headers */,
 				448EF75C20EBA037004549C1 /* CodeTeleportLoader.h in Headers */,
+				44CE9BDC2483B3140058BF23 /* PTPrivate.h in Headers */,
 				444301D620E62A0F00BD9445 /* CodeTeleportClient.h in Headers */,
+				44CE9BDA2483B3140058BF23 /* Peertalk.h in Headers */,
+				44CE9BDF2483B3140058BF23 /* PTChannel.h in Headers */,
 				448EF74F20E8DD9C004549C1 /* CodeTeleportProcessor.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -285,7 +330,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				444301CB20E629EE00BD9445 /* Documentation.html in Resources */,
+				44CE9BD52483B3140058BF23 /* Documentation.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -323,11 +368,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				444301CC20E629EE00BD9445 /* GCDAsyncSocket.m in Sources */,
 				444301D720E62A0F00BD9445 /* CodeTeleportClient.m in Sources */,
+				44CE9BD62483B3140058BF23 /* GCDAsyncSocket.m in Sources */,
 				448EF75D20EBA037004549C1 /* CodeTeleportLoader.m in Sources */,
+				44CE9BDB2483B3140058BF23 /* PTChannel.m in Sources */,
 				444301CF20E629EE00BD9445 /* CodeTeleportUtils.m in Sources */,
+				44CE9BD82483B3140058BF23 /* PTUSBHub.m in Sources */,
 				448EF74E20E8DD9C004549C1 /* CodeTeleportProcessor.m in Sources */,
+				44CE9BD92483B3140058BF23 /* PTProtocol.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
