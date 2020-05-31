@@ -9,8 +9,6 @@
 #import "CTProcessor.h"
 #import "CTUtils.h"
 #import "FileWatcher.h"
-#import "Xcode.h"
-#import "XcodeHash.h"
 #import <sys/stat.h>
 
 @interface CTProcessor(){

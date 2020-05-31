@@ -9,8 +9,6 @@
 #import "CTUtils.h"
 #include <ifaddrs.h>
 #include <arpa/inet.h>
-#import "Xcode.h"
-#import "XcodeHash.h"
 
 @implementation CTUtils
 

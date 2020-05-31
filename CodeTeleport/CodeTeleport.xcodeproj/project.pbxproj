@@ -20,10 +20,12 @@
 		444301E320E6548300BD9445 /* DDHotKeyUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 444301E020E6548300BD9445 /* DDHotKeyUtilities.m */; };
 		444301E420E6548300BD9445 /* DDHotKeyCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 444301E120E6548300BD9445 /* DDHotKeyCenter.m */; };
 		444301EF20E654AC00BD9445 /* FileWatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 444301EB20E654AC00BD9445 /* FileWatcher.m */; };
-		444301F420E65DD600BD9445 /* XcodeHash.m in Sources */ = {isa = PBXBuildFile; fileRef = 444301F120E65DD600BD9445 /* XcodeHash.m */; };
 		448EF75420E8E3BD004549C1 /* find_compile_command.py in Resources */ = {isa = PBXBuildFile; fileRef = 448EF75220E8E3BC004549C1 /* find_compile_command.py */; };
 		448EF75820E9CDA2004549C1 /* icon_active.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 448EF75620E9CDA2004549C1 /* icon_active.tiff */; };
 		448EF75920E9CDA2004549C1 /* icon_idle.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 448EF75720E9CDA2004549C1 /* icon_idle.tiff */; };
+		44CE9BC22483B1880058BF23 /* PTUSBHub.m in Sources */ = {isa = PBXBuildFile; fileRef = 44CE9BBA2483B1870058BF23 /* PTUSBHub.m */; };
+		44CE9BC32483B1880058BF23 /* PTChannel.m in Sources */ = {isa = PBXBuildFile; fileRef = 44CE9BBB2483B1880058BF23 /* PTChannel.m */; };
+		44CE9BC42483B1880058BF23 /* PTProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 44CE9BBE2483B1880058BF23 /* PTProtocol.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -53,13 +55,18 @@
 		444301E220E6548300BD9445 /* DDHotKeyUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDHotKeyUtilities.h; sourceTree = "<group>"; };
 		444301EB20E654AC00BD9445 /* FileWatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileWatcher.m; sourceTree = "<group>"; };
 		444301EC20E654AC00BD9445 /* FileWatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileWatcher.h; sourceTree = "<group>"; };
-		444301F120E65DD600BD9445 /* XcodeHash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XcodeHash.m; sourceTree = "<group>"; };
-		444301F220E65DD600BD9445 /* XcodeHash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XcodeHash.h; sourceTree = "<group>"; };
-		444301F320E65DD600BD9445 /* Xcode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Xcode.h; sourceTree = "<group>"; };
 		444301F620E6620700BD9445 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		448EF75220E8E3BC004549C1 /* find_compile_command.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = find_compile_command.py; sourceTree = "<group>"; };
 		448EF75620E9CDA2004549C1 /* icon_active.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = icon_active.tiff; sourceTree = "<group>"; };
 		448EF75720E9CDA2004549C1 /* icon_idle.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = icon_idle.tiff; sourceTree = "<group>"; };
+		44CE9BBA2483B1870058BF23 /* PTUSBHub.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTUSBHub.m; sourceTree = "<group>"; };
+		44CE9BBB2483B1880058BF23 /* PTChannel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTChannel.m; sourceTree = "<group>"; };
+		44CE9BBC2483B1880058BF23 /* PTProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTProtocol.h; sourceTree = "<group>"; };
+		44CE9BBD2483B1880058BF23 /* PTPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTPrivate.h; sourceTree = "<group>"; };
+		44CE9BBE2483B1880058BF23 /* PTProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTProtocol.m; sourceTree = "<group>"; };
+		44CE9BBF2483B1880058BF23 /* Peertalk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Peertalk.h; sourceTree = "<group>"; };
+		44CE9BC02483B1880058BF23 /* PTChannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTChannel.h; sourceTree = "<group>"; };
+		44CE9BC12483B1880058BF23 /* PTUSBHub.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTUSBHub.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,11 +126,8 @@
 		4443019C20E625DC00BD9445 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				444301F020E65DD600BD9445 /* XcodeStuff */,
-				444301DE20E6548300BD9445 /* DDHotKey */,
-				444301EA20E654AC00BD9445 /* FilerWatcher */,
+				44CE9BB82483B08B0058BF23 /* Dependent */,
 				444301A920E6267300BD9445 /* Utils */,
-				4443019D20E625DC00BD9445 /* GCDAsyncSocket */,
 				444301A620E6263A00BD9445 /* CodeTeleportServer.h */,
 				444301A720E6263A00BD9445 /* CodeTeleportServer.m */,
 				444301D820E6509200BD9445 /* CTBuilder.h */,
@@ -174,16 +178,6 @@
 			path = FilerWatcher;
 			sourceTree = "<group>";
 		};
-		444301F020E65DD600BD9445 /* XcodeStuff */ = {
-			isa = PBXGroup;
-			children = (
-				444301F120E65DD600BD9445 /* XcodeHash.m */,
-				444301F220E65DD600BD9445 /* XcodeHash.h */,
-				444301F320E65DD600BD9445 /* Xcode.h */,
-			);
-			path = XcodeStuff;
-			sourceTree = "<group>";
-		};
 		444301F520E6620700BD9445 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -198,6 +192,32 @@
 				448EF75220E8E3BC004549C1 /* find_compile_command.py */,
 			);
 			path = Script;
+			sourceTree = "<group>";
+		};
+		44CE9BB82483B08B0058BF23 /* Dependent */ = {
+			isa = PBXGroup;
+			children = (
+				44CE9BB92483B15A0058BF23 /* PTChannel */,
+				444301DE20E6548300BD9445 /* DDHotKey */,
+				444301EA20E654AC00BD9445 /* FilerWatcher */,
+				4443019D20E625DC00BD9445 /* GCDAsyncSocket */,
+			);
+			path = Dependent;
+			sourceTree = "<group>";
+		};
+		44CE9BB92483B15A0058BF23 /* PTChannel */ = {
+			isa = PBXGroup;
+			children = (
+				44CE9BBF2483B1880058BF23 /* Peertalk.h */,
+				44CE9BC02483B1880058BF23 /* PTChannel.h */,
+				44CE9BBB2483B1880058BF23 /* PTChannel.m */,
+				44CE9BBD2483B1880058BF23 /* PTPrivate.h */,
+				44CE9BBC2483B1880058BF23 /* PTProtocol.h */,
+				44CE9BBE2483B1880058BF23 /* PTProtocol.m */,
+				44CE9BC12483B1880058BF23 /* PTUSBHub.h */,
+				44CE9BBA2483B1870058BF23 /* PTUSBHub.m */,
+			);
+			path = PTChannel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -276,10 +296,12 @@
 				444301DD20E653C800BD9445 /* CTProcessor.m in Sources */,
 				444301A420E625DD00BD9445 /* GCDAsyncSocket.m in Sources */,
 				444301EF20E654AC00BD9445 /* FileWatcher.m in Sources */,
-				444301F420E65DD600BD9445 /* XcodeHash.m in Sources */,
+				44CE9BC22483B1880058BF23 /* PTUSBHub.m in Sources */,
 				444301AC20E6268900BD9445 /* CTUtils.m in Sources */,
 				444301A820E6263A00BD9445 /* CodeTeleportServer.m in Sources */,
 				4443019020E6203000BD9445 /* main.m in Sources */,
+				44CE9BC42483B1880058BF23 /* PTProtocol.m in Sources */,
+				44CE9BC32483B1880058BF23 /* PTChannel.m in Sources */,
 				444301DA20E6509200BD9445 /* CTBuilder.m in Sources */,
 				444301E320E6548300BD9445 /* DDHotKeyUtilities.m in Sources */,
 				444301E420E6548300BD9445 /* DDHotKeyCenter.m in Sources */,
