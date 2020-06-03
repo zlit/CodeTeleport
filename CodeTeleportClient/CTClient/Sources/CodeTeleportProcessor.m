@@ -17,15 +17,6 @@
 
 @implementation CodeTeleportProcessor
 
-- (instancetype)init
-{
-    self = [super init];
-    if (self) { 
-        
-    }
-    return self;
-}
-
 - (void)processMessage:(NSString *)message
 {
     if ([message hasPrefix:@"HELLO "]) {
@@ -39,17 +30,13 @@
         NSString *dylibInfo = [message substringFromIndex:@"TELEPORT ".length];
         NSArray *dylibInfoArray = [dylibInfo componentsSeparatedByString:@"#"];
         NSString *dylibPath = [dylibInfoArray firstObject];
-        NSArray *classNames = [[dylibInfoArray objectAtIndex:1] componentsSeparatedByString:@"|"];
         
-        if(dylibPath.length > 0
-           && [classNames count] > 0){
+        if (dylibPath.length > 0) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 NSError *error;
-
-                [CodeTeleportLoader loadDylibWithPath:dylibPath
-                                           classNames:classNames
-                                                error:&error];
-                
+                // dispatch to main thread, because maybe class +load +initialize require;
+                NSArray *classNames = [CodeTeleportLoader loadDylibWithPath:dylibPath
+                                                                      error:&error];
                 if(error == nil){
                     [[NSNotificationCenter defaultCenter] postNotificationName:kCodeTeleportCompletedNotification
                                                                         object:nil];
@@ -59,7 +46,7 @@
                     [self writeResponse:@"FAILED " msg:[error description]];
                 }
             });
-        }else{
+        } else {
             [self writeResponse:@"FAILED " msg:[NSString stringWithFormat:@"dylibInfo invalid"]];
         }
         

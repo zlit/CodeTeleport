@@ -13,14 +13,16 @@
 #import "CTProcessor.h"
 #import "AppDelegate.h"
 
-#define kListenPort 10000
+#define kLocalHost @"127.0.0.1"
+#define kServerPort 18888
 
-static GCDAsyncSocket *asyncSocket;
-static CodeTeleportServer *server;
+static CodeTeleportServer *localConnector;
 
 @interface CodeTeleportServer()<GCDAsyncSocketDelegate>{
-    GCDAsyncSocket *_newSocket;
+    GCDAsyncSocket *_asyncSocket;
     CTProcessor *_processor;
+    NSThread *_mThread;
+    NSTimer *_mTimer;
 }
 
 @end
@@ -29,83 +31,111 @@ static CodeTeleportServer *server;
 
 +(void)load{
     CTLog(@"CodeTeleportServer load.");
-    [CodeTeleportServer startServer];
+    localConnector = [[CodeTeleportServer alloc] init];
+    [localConnector connectToSocketServer];
 }
 
-+ (void)startServer
+- (void)connectToSocketServer
 {
-    server = [[CodeTeleportServer alloc] init];
-    asyncSocket = [[GCDAsyncSocket alloc] initWithDelegate:server delegateQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)];
-    [asyncSocket setAutoDisconnectOnClosedReadStream:NO];
+    _mThread = [[NSThread alloc] initWithTarget:self
+                                       selector:@selector(runThread)
+                                         object:nil];
+    [_mThread start];
     
-    NSError *socketError = nil;
-    if ([asyncSocket acceptOnPort:kListenPort error:&socketError])
-    {
-        UInt16 realPort = [asyncSocket localPort];
-        CTLog(@"accept on %@:%d", [CTUtils getIPAddress], realPort);
-    }
+    [self performSelector:@selector(startTimer)
+                 onThread:_mThread
+               withObject:nil
+            waitUntilDone:NO];
+}
 
-    if (socketError) {
-        CTLog(@"start faild: %@", socketError);
+- (void)runThread
+{
+    [[NSThread currentThread] setName:@"CodeTeleportServer timer"];
+    NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
+    [runLoop addPort:[NSMachPort port] forMode:NSDefaultRunLoopMode];
+    [runLoop run];
+}
+
+- (void)startTimer
+{
+    _mTimer = [NSTimer scheduledTimerWithTimeInterval:5
+                                               target:self
+                                             selector:@selector(tryToConnectLocalServer)
+                                             userInfo:nil
+                                              repeats:YES];
+}
+
+- (void)tryToConnectLocalServer
+{
+    if (_asyncSocket == nil) {
+        _asyncSocket = [[GCDAsyncSocket alloc] initWithDelegate:self
+                                                        delegateQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)];
+        
+        NSError *socketError = nil;
+        if ([_asyncSocket connectToHost:kLocalHost
+                                 onPort:kServerPort
+                                  error:&socketError])
+        {
+            CTLog(@"connected to server");
+        }
+        
+        if (socketError) {
+            CTLog(@"failed to connect to server: %@", socketError);
+            _asyncSocket = nil;
+        }
     }
 }
 
 #pragma mark - AsyncSocketDelegate
 
-- (void)socket:(GCDAsyncSocket *)sender didAcceptNewSocket:(GCDAsyncSocket *)newSocket
+- (void)socket:(GCDAsyncSocket *)sock didConnectToHost:(NSString *)host port:(uint16_t)port
 {
-    NSString *remoteHost = [newSocket connectedHost];
-    UInt16    remotePort = [newSocket connectedPort];
-    CTLog(@"accepted new client %@:%hu", remoteHost, remotePort);
-    [self closeCurrentSocket];
-    
-    _newSocket = newSocket;
     _processor = [self buildNewProcessor];
+    CTLog(@"didConnectToHost: %@, port: %d.",host,port);
     
-    [_newSocket writeData:[@"HELLO " dataUsingEncoding:NSUTF8StringEncoding]
-              withTimeout:-1
-                      tag:0];
-    [appdelegate() setStatusIcon:StatusIconTypeActive];
+    [_asyncSocket writeData:[@"HELLO " dataUsingEncoding:NSUTF8StringEncoding]
+                withTimeout:-1
+                        tag:0];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [appdelegate() setStatusIcon:StatusIconTypeActive];
+    });
 }
 
 - (void)socket:(GCDAsyncSocket *)sock didWriteDataWithTag:(long)tag {
     CTLog(@"didWriteDataWithTag:%lu",tag);
-    [_newSocket readDataWithTimeout:-1 tag:0];
+    [_asyncSocket readDataWithTimeout:-1 tag:0];
 }
 
 - (void)socket:(GCDAsyncSocket *)sender didReadData:(NSData *)data withTag:(long)tag
 {
     NSString *readString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    CTLog(@" didReadData: %@, tag: %lu", readString,tag);
+    CTLog(@"didReadData: %@", readString);
     [_processor processMessage:readString];
+    
+    [_asyncSocket readDataWithTimeout:-1 tag:0];
 }
 
 - (void)socketDidDisconnect:(GCDAsyncSocket *)sock withError:(NSError *)err
 {
     CTLog(@"disconnected: %@, %@", sock, err);
-    [appdelegate() setStatusIcon:StatusIconTypeIdle];
-    [self closeCurrentSocket];
-}
-
-- (void)closeCurrentSocket{
-    if(_newSocket){
-        if([_newSocket isConnected]){
-            CTLog(@"close old client %@:%hu", [_newSocket connectedHost], [_newSocket connectedPort]);
-            [_newSocket disconnect];
-        }
-        _newSocket = nil;
-    }
+    _asyncSocket = nil;
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [appdelegate() setStatusIcon:StatusIconTypeIdle];
+    });
 }
 
 - (CTProcessor *)buildNewProcessor
 {
     CTProcessor *processor = [[CTProcessor alloc] init];
+    processor.communicationChannel = CTCommunicationChannelLocalHost;
     __weak CodeTeleportServer *weakSelf = self;
-    processor.processResponseBlock = ^(CTProcessor *builder,NSString* msg){
+    processor.processResponseBlock = ^(CTProcessor *builder, CTDataType dataType, NSData* data){
         __strong CodeTeleportServer *strongSelf = weakSelf;
-        [strongSelf->_newSocket writeData:[msg dataUsingEncoding:NSUTF8StringEncoding]
-                              withTimeout:-1
-                                      tag:0];
+        [strongSelf->_asyncSocket writeData:data
+                                withTimeout:-1
+                                        tag:dataType];
     };
     return processor;
 }

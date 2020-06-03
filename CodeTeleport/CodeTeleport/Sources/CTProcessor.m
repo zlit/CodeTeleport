@@ -27,13 +27,21 @@
         
         __weak CTProcessor *weakSelf = self;
         
-        self.builder.buildCompletedBlock = ^(CTBuilder *builder, NSString *msg){
-            [weakSelf writeResponse:@"TELEPORT " msg:msg];
+        self.builder.buildCompletedBlock = ^(CTBuilder *builder, NSString *dylibPath){
+            if (weakSelf.communicationChannel == CTCommunicationChannelLocalHost) {
+                NSString *loadDylibMsg = [NSString stringWithFormat:@"TELEPORT %@",dylibPath];
+                [weakSelf writeResponse:CTDataTypeDylib data:[loadDylibMsg dataUsingEncoding:NSUTF8StringEncoding]];
+            } else {
+                NSData *data = [NSData dataWithContentsOfFile:dylibPath];
+                [weakSelf writeResponse:CTDataTypeDylib data:data];
+            }
         };
         
         self.builder.buildFailedBlock = ^(CTBuilder *builder, NSString *msg) {
             [appdelegate() showCompeledNotice:@"Error: please see the Xcode output log for detail."];
-            [weakSelf writeResponse:@"ERROR " msg:msg];
+            NSString *errorResponse = [NSString stringWithFormat:@"ERROR %@",msg];
+            [weakSelf writeResponse:CTDataTypeText
+                               data:[errorResponse dataUsingEncoding:NSUTF8StringEncoding]];
         };
         
         [[NSNotificationCenter defaultCenter] addObserver:self
@@ -90,7 +98,7 @@
     NSArray *args = [buildEnviromentConfigs componentsSeparatedByString:@"#"];
     CTLog(@"buildEnviromentConfigs:%@",args);
     
-    if([args count] >=8){
+    if([args count] >= 12){
         NSInteger argIndex = 0;
 
         NSString *customProjectPath = @"";
@@ -103,12 +111,14 @@
                 customProjectPath = appdelegate().monitorFilePath;
             }
         }
-        ///Users/zhaolei/Documents/demo/CodeTeleport_new/CodeTeleportClient
+        
         if(customProjectPath.length > 0){
+            //custom monitor sourceCode path
             [self.builder setArg:customProjectPath
                       toProperty:@"projectPath"
                      isDirectory:YES];
         }else{
+            //default monitor sourceCode path
             [self.builder setArg:[args objectAtIndex:argIndex]
                       toProperty:@"projectPath"
                      isDirectory:YES];
@@ -142,6 +152,22 @@
         [self.builder setArg:[args objectAtIndex:++argIndex]
                   toProperty:@"simulatorUDID"
                  isDirectory:NO];
+        
+        [self.builder setArg:[args objectAtIndex:++argIndex]
+                  toProperty:@"codeSignIdentity"
+                 isDirectory:NO];
+        [self.builder setArg:[args objectAtIndex:++argIndex]
+                  toProperty:@"codeSignFolderPath"
+                 isDirectory:YES];
+        [self.builder setArg:[args objectAtIndex:++argIndex]
+                  toProperty:@"frameworkFloderPath"
+                 isDirectory:NO];
+        [self.builder setArg:[args objectAtIndex:++argIndex]
+                  toProperty:@"excutablePath"
+                 isDirectory:NO];
+        [self.builder setArg:[args objectAtIndex:++argIndex]
+                  toProperty:@"productName"
+                 isDirectory:NO];
     }
     return [self.builder checkConfigValid];
 }
@@ -164,12 +190,11 @@
     [self.builder buildModifyFiles];
 }
 
-- (void)writeResponse:(NSString *)header
-                  msg:(NSString *)msg
+- (void)writeResponse:(CTDataType)dataType
+                 data:(NSData *)data
 {
     if(self.processResponseBlock){
-        NSString *errorMsg = [NSString stringWithFormat:@"%@%@",header,msg];
-        self.processResponseBlock(self,errorMsg);
+        self.processResponseBlock(self,dataType,data);
     }
 }
 

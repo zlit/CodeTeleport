@@ -91,8 +91,7 @@ if __name__ == "__main__":
     read_lines = read_content.splitlines()
     print len(read_lines)
     for tmp_line in read_lines:
-        #if FILE_PATH in tmp_line and ' -o ' in tmp_line and 'clang' in tmp_line and ARCH in tmp_line
-        if FILE_PATH in tmp_line and '-arch '+ ARCH in tmp_line:
+        if FILE_PATH in tmp_line and ' -o ' in tmp_line and 'clang' in tmp_line and ARCH in tmp_line:
             splitArray = tmp_line.split(' -o ')
             compile_command = splitArray[0]
 

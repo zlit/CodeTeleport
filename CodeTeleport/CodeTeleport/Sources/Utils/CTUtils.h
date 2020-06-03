@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "AppDelegate.h"
+
 #define CTLog(fmt, ...) \
 NSLog((@"[CodeTeleportServer] " fmt), ##__VA_ARGS__); \
 
@@ -37,4 +38,5 @@ NS_INLINE AppDelegate *appdelegate(){
 + (BOOL)executeShellCommand:(NSString *)command;
 
 + (NSString *)readLogWithPath:(NSString *)path;
+
 @end

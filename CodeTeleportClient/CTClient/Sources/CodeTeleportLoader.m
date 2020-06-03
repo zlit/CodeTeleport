@@ -15,6 +15,66 @@ static void *dylibHandle;
 
 @implementation CodeTeleportLoader
 
++ (NSArray *)loadDylibWithPath:(NSString *) path
+                         error:(NSError **) error
+{
+    if ([[NSFileManager defaultManager] fileExistsAtPath:path] == NO) {
+        *error = CTError(@"%@ is not exist.",path);
+        return nil;
+    }
+
+    const char *dylibCString = [path cStringUsingEncoding:NSUTF8StringEncoding];
+
+    dylibHandle = dlopen(dylibCString, RTLD_NOW | RTLD_GLOBAL);
+
+    if (dylibHandle == NULL) {
+       *error = CTError(@"open dylib error: %s.", dlerror());
+       return nil;
+    }
+
+    CTLog(@"image opened");
+    
+    unsigned classCount = 0;
+    const char **classes;
+    
+    classes = objc_copyClassNamesForImage(dylibCString
+                                          , &classCount);
+    
+    if (classCount == 0) {
+        //device must prefix '/private'
+        const char *privatePathUTF8String = [[NSString stringWithFormat:@"/private%@",path] UTF8String];
+        classes = objc_copyClassNamesForImage(privatePathUTF8String, &classCount);
+    }
+    
+    if (classCount == 0) {
+        *error = CTError(@"objc_copyClassNamesForImage failed");
+        return nil;
+    }
+    
+    NSMutableArray *classNames = [NSMutableArray array];
+    
+    for (int i=0; i<classCount; i++) {
+        NSString *className = [NSString stringWithCString:classes[i] encoding:NSUTF8StringEncoding];
+//        NSString *className = @"ViewController";
+        [classNames addObject:className];
+        CTLog(@"load class : %@ from image",className);
+        
+        
+        Class class = [CodeTeleportLoader getClassWithDylib:dylibHandle
+                                                  className:className];
+        Class oldClass = NSClassFromString(className);
+        if (class && oldClass) {
+          
+            [CodeTeleportLoader replaceMethodFrom:object_getClass(class)
+                                          toClass:object_getClass(oldClass)];
+            
+            [CodeTeleportLoader replaceMethodFrom:class
+                                          toClass:oldClass];
+        }
+    }
+    return classNames;
+}
+
 + (void)loadDylibWithPath:(NSString *) path
                classNames:(NSArray *) classNames
                     error:(NSError **) error

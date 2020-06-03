@@ -13,7 +13,7 @@
 
 @class CTBuilder;
 
-typedef void(^BuildCompletedBlock)(CTBuilder *builder,NSString* msg);
+typedef void(^BuildCompletedBlock)(CTBuilder *builder,NSString* dylibPath);
 typedef void(^BuildFailedBlock)(CTBuilder *builder,NSString* msg);
 
 @interface CTBuilder : NSObject
@@ -27,9 +27,14 @@ typedef void(^BuildFailedBlock)(CTBuilder *builder,NSString* msg);
 @property(nonatomic,copy) NSString* sdkDir;
 @property(nonatomic,copy) NSString* targetOSVersion;
 @property(nonatomic,copy) NSString* simulatorUDID;
+@property(nonatomic,copy) NSString* codeSignIdentity;
+@property(nonatomic,copy) NSString* codeSignFolderPath;
+@property(nonatomic,copy) NSString* frameworkFloderPath;
+@property(nonatomic,copy) NSString* excutablePath;
+@property(nonatomic,copy) NSString* productName;
 
 @property(nonatomic,copy) BuildCompletedBlock buildCompletedBlock;
-@property(nonatomic,copy) BuildCompletedBlock buildFailedBlock;
+@property(nonatomic,copy) BuildFailedBlock buildFailedBlock;
 
 - (void)setArg:(NSString *)arg
     toProperty:(NSString *)property

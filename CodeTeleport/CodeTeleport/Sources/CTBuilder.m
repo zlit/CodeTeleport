@@ -10,6 +10,9 @@
 #import "CTUtils.h"
 
 static int kThreadIndex = 1;
+
+#define kTemplateKey @"-_-_-_template_-_-_-"
+
 /**
  builder的很多属性可以通过奇技淫巧来获取.
  比如:
@@ -38,6 +41,23 @@ static int kThreadIndex = 1;
 
 @implementation CTBuilder
 
+- (void)dealloc
+{
+    [self saveCompileCommandTemplateAndCache];
+}
+
+- (NSString *)commandTemplateKey
+{
+    NSString *commandTemplateKey = [NSString stringWithFormat:@"%@_commandTemplateKey",self.projectPath];
+    return commandTemplateKey;
+}
+
+- (NSString *)compileCommandCacheKey
+{
+    NSString *compileCommandCacheKey = [NSString stringWithFormat:@"%@_compileCommandCacheKey",self.projectPath];
+    return compileCommandCacheKey;
+}
+
 - (instancetype)init
 {
     self = [super init];
@@ -45,11 +65,28 @@ static int kThreadIndex = 1;
         self.waitingForTeleport = [[NSMutableArray alloc] init];
         self.scriptPath = [[NSBundle mainBundle] pathForResource:@"find_compile_command"
                                                           ofType:@"py"];
-        self.compileCommandCache = [[NSMutableDictionary alloc] init];
         const char *label = [[NSString stringWithFormat:@"TeleportQueue_%d",kThreadIndex] cStringUsingEncoding:NSUTF8StringEncoding];
         _teleportQueue = dispatch_queue_create(label, DISPATCH_QUEUE_SERIAL);
+        self.compileCommandCache = [[NSMutableDictionary alloc] init];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(saveCompileCommandTemplateAndCache)
+                                                     name:@"CTApplicationQuitEventTriggering"
+                                                   object:nil];
     }
     return self;
+}
+
+- (void)saveCompileCommandTemplateAndCache
+{
+    if (self.compileCommandTemplate.length > 0) {
+        [[NSUserDefaults standardUserDefaults] setObject:self.compileCommandTemplate
+                                                  forKey:[self compileCommandTemplate]];
+    }
+    
+    if ([[self.compileCommandCache allKeys] count] > 0) {
+        [[NSUserDefaults standardUserDefaults] setObject:self.compileCommandCache
+                                                  forKey:[self compileCommandCacheKey]];
+    }
 }
 
 - (void)setArg:(NSString *)arg
@@ -68,6 +105,15 @@ static int kThreadIndex = 1;
     }
     [self setValue:arg forKey:property];
     CTLog(@"set %@ to %@",[self valueForKey:property],property);
+ 
+    //load compileCommandTemplate and compileCommandCache
+    if ([property isEqualToString:@"projectPath"]) {
+        self.compileCommandTemplate = [[NSUserDefaults standardUserDefaults] objectForKey:[self commandTemplateKey]];
+        self.compileCommandCache = [[NSUserDefaults standardUserDefaults] objectForKey:[self compileCommandCacheKey]];
+        if (self.compileCommandCache == nil) {
+            self.compileCommandCache = [[NSMutableDictionary alloc] init];
+        }
+    }
 }
 
 - (BOOL)checkConfigValid
@@ -93,7 +139,11 @@ static int kThreadIndex = 1;
     dispatch_async(_teleportQueue, ^{
         if ([weakSelf.waitingForTeleport count] == 0) {
             CTLog(@"no file waiting for Teleport.");
-            [appdelegate() showCompeledNotice:@"no file waiting for Teleport."];
+            
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [appdelegate() showCompeledNotice:@"no file waiting for Teleport."];
+            });
+            
             return;
         }
         
@@ -131,20 +181,24 @@ static int kThreadIndex = 1;
         _compileLogPath = [self.buildTaskPath stringByAppendingFormat:@"%@.log",fileName];
         _compileExecutablePath = [self.buildTaskPath stringByAppendingFormat:@"%@.o",fileName];
         
+        //1. compileCommand from cache
         NSString * compileCommand = [self.compileCommandCache objectForKey:modifyFile];
-        // TODO: add disk cache
-        
-        if (compileCommand.length == 0
-            && self.compileCommandTemplate.length > 0) {
-            [compileCommand stringByReplacingOccurrencesOfString:@"-_-_-_template_-_-_-"
-                                                      withString:modifyFile];
-        }
         
         if(compileCommand.length == 0){
             NSError *error;
+            //2. compileCommand from compileLog
             compileCommand = [self findCompileCommand:modifyFile
                                                 error:&error];
-            if(error != nil){
+            
+            //3. compileCommand from commandTemplate, file's configuration is difference , maybe some mistake.
+            if (compileCommand.length == 0
+                && self.compileCommandTemplate.length > 0) {
+                [compileCommand stringByReplacingOccurrencesOfString:kTemplateKey
+                                                          withString:modifyFile];
+            }
+            
+            if(compileCommand.length == 0
+               && error != nil){
                 if(self.buildFailedBlock){
                     self.buildFailedBlock(self,[error description]);
                 }
@@ -157,11 +211,15 @@ static int kThreadIndex = 1;
         BOOL result = [CTUtils executeShellCommand:executeCommand];
         if(result){
             
-            self.compileCommandTemplate = [compileCommand stringByReplacingOccurrencesOfString:modifyFile withString:@"-_-_-_template_-_-_-"];
+            //if compileCommand work, create a template
+            self.compileCommandTemplate = [compileCommand stringByReplacingOccurrencesOfString:modifyFile
+                                                                                    withString:kTemplateKey];
+            //if compileCommand work, save to cache
+            [self.compileCommandCache setObject:compileCommand
+                                         forKey:modifyFile];
+            [compileFileList addObject:_compileExecutablePath];
             
-                [self.compileCommandCache setObject:compileCommand
-                                             forKey:modifyFile];
-                [compileFileList addObject:_compileExecutablePath];
+            [self saveCompileCommandTemplateAndCache];
         }else{
             [self.compileCommandCache removeObjectForKey:modifyFile];
             NSString *errorMsg = [@"compile fialed. \n " stringByAppendingString:[CTUtils readLogWithPath:_compileLogPath]];
@@ -195,8 +253,7 @@ static int kThreadIndex = 1;
     }
     
     if(self.buildCompletedBlock){
-        NSString *dylibInfo = [_dylibPath stringByAppendingFormat:@"#%@",[compileFileNameList componentsJoinedByString:@"|"]];
-        self.buildCompletedBlock(self,dylibInfo);
+        self.buildCompletedBlock(self,_dylibPath);
         [self.waitingForTeleport removeAllObjects];
         CTLog(@"buildCompleted,clean waitingForTeleport files");
     }
@@ -238,7 +295,7 @@ static int kThreadIndex = 1;
             -dynamiclib\
             -ObjC\
             -isysroot\
-            %@/iPhoneSimulator.sdk\
+            %@\
             -mios-simulator-version-min=%@\
             -undefined\
             dynamic_lookup\
@@ -257,10 +314,8 @@ static int kThreadIndex = 1;
 {
     NSString *command = [NSString stringWithFormat:@"\
                          export CODESIGN_ALLOCATE=%@/Toolchains/XcodeDefault.xctoolchain/usr/bin/codesign_allocate; \
-                         export PATH=\"%@/Platforms/iPhoneSimulator.platform/Developer/usr/bin:%@/usr/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin\"; \
-                         /usr/bin/codesign --force --sign - \
-                         --timestamp=none \
-                         %@",self.xcodeDev,self.xcodeDev,self.xcodeDev,dylibPath];
+                         export PATH=\"%@/Platforms/iPhoneOS.platform/Developer/usr/bin:%@/usr/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin\"; \
+                         /usr/bin/codesign --verbose --force --sign %@ %@",self.xcodeDev,self.xcodeDev,self.xcodeDev,self.codeSignIdentity,dylibPath];
     return command;
 }
 

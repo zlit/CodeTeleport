@@ -23,16 +23,17 @@
 		448EF7E520F5FE9E004549C1 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 448EF7E420F5FE9E004549C1 /* Default-568h@2x.png */; };
 		44BFD7C120F8812F004263AB /* CTClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 444301B220E6299F00BD9445 /* CTClient.framework */; };
 		44CE9BD52483B3140058BF23 /* Documentation.html in Resources */ = {isa = PBXBuildFile; fileRef = 44CE9BC92483B3140058BF23 /* Documentation.html */; };
-		44CE9BD62483B3140058BF23 /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 44CE9BCA2483B3140058BF23 /* GCDAsyncSocket.m */; };
+		44CE9BD62483B3140058BF23 /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 44CE9BCA2483B3140058BF23 /* GCDAsyncSocket.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		44CE9BD72483B3140058BF23 /* GCDAsyncSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = 44CE9BCB2483B3140058BF23 /* GCDAsyncSocket.h */; };
-		44CE9BD82483B3140058BF23 /* PTUSBHub.m in Sources */ = {isa = PBXBuildFile; fileRef = 44CE9BCD2483B3140058BF23 /* PTUSBHub.m */; };
-		44CE9BD92483B3140058BF23 /* PTProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 44CE9BCE2483B3140058BF23 /* PTProtocol.m */; };
-		44CE9BDA2483B3140058BF23 /* Peertalk.h in Headers */ = {isa = PBXBuildFile; fileRef = 44CE9BCF2483B3140058BF23 /* Peertalk.h */; };
-		44CE9BDB2483B3140058BF23 /* PTChannel.m in Sources */ = {isa = PBXBuildFile; fileRef = 44CE9BD02483B3140058BF23 /* PTChannel.m */; };
-		44CE9BDC2483B3140058BF23 /* PTPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 44CE9BD12483B3140058BF23 /* PTPrivate.h */; };
-		44CE9BDD2483B3140058BF23 /* PTProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 44CE9BD22483B3140058BF23 /* PTProtocol.h */; };
-		44CE9BDE2483B3140058BF23 /* PTUSBHub.h in Headers */ = {isa = PBXBuildFile; fileRef = 44CE9BD32483B3140058BF23 /* PTUSBHub.h */; };
-		44CE9BDF2483B3140058BF23 /* PTChannel.h in Headers */ = {isa = PBXBuildFile; fileRef = 44CE9BD42483B3140058BF23 /* PTChannel.h */; };
+		44CE9BFF2483F11F0058BF23 /* PTUSBHub.m in Sources */ = {isa = PBXBuildFile; fileRef = 44CE9BF82483F11F0058BF23 /* PTUSBHub.m */; };
+		44CE9C002483F11F0058BF23 /* PTProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 44CE9BF92483F11F0058BF23 /* PTProtocol.m */; };
+		44CE9C012483F11F0058BF23 /* PTChannel.m in Sources */ = {isa = PBXBuildFile; fileRef = 44CE9BFA2483F11F0058BF23 /* PTChannel.m */; };
+		44CE9C022483F11F0058BF23 /* PTPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 44CE9BFB2483F11F0058BF23 /* PTPrivate.h */; };
+		44CE9C032483F11F0058BF23 /* PTProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 44CE9BFC2483F11F0058BF23 /* PTProtocol.h */; };
+		44CE9C042483F11F0058BF23 /* PTUSBHub.h in Headers */ = {isa = PBXBuildFile; fileRef = 44CE9BFD2483F11F0058BF23 /* PTUSBHub.h */; };
+		44CE9C052483F11F0058BF23 /* PTChannel.h in Headers */ = {isa = PBXBuildFile; fileRef = 44CE9BFE2483F11F0058BF23 /* PTChannel.h */; };
+		44CE9C082483F14A0058BF23 /* CTPTChannelPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 44CE9C062483F1490058BF23 /* CTPTChannelPrivate.h */; };
+		44CE9C092483F14A0058BF23 /* CTPTChannelPrivate.m in Sources */ = {isa = PBXBuildFile; fileRef = 44CE9C072483F14A0058BF23 /* CTPTChannelPrivate.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,14 +82,15 @@
 		44CE9BC92483B3140058BF23 /* Documentation.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = Documentation.html; sourceTree = "<group>"; };
 		44CE9BCA2483B3140058BF23 /* GCDAsyncSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDAsyncSocket.m; sourceTree = "<group>"; };
 		44CE9BCB2483B3140058BF23 /* GCDAsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDAsyncSocket.h; sourceTree = "<group>"; };
-		44CE9BCD2483B3140058BF23 /* PTUSBHub.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTUSBHub.m; sourceTree = "<group>"; };
-		44CE9BCE2483B3140058BF23 /* PTProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTProtocol.m; sourceTree = "<group>"; };
-		44CE9BCF2483B3140058BF23 /* Peertalk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Peertalk.h; sourceTree = "<group>"; };
-		44CE9BD02483B3140058BF23 /* PTChannel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTChannel.m; sourceTree = "<group>"; };
-		44CE9BD12483B3140058BF23 /* PTPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTPrivate.h; sourceTree = "<group>"; };
-		44CE9BD22483B3140058BF23 /* PTProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTProtocol.h; sourceTree = "<group>"; };
-		44CE9BD32483B3140058BF23 /* PTUSBHub.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTUSBHub.h; sourceTree = "<group>"; };
-		44CE9BD42483B3140058BF23 /* PTChannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTChannel.h; sourceTree = "<group>"; };
+		44CE9BF82483F11F0058BF23 /* PTUSBHub.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTUSBHub.m; sourceTree = "<group>"; };
+		44CE9BF92483F11F0058BF23 /* PTProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTProtocol.m; sourceTree = "<group>"; };
+		44CE9BFA2483F11F0058BF23 /* PTChannel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTChannel.m; sourceTree = "<group>"; };
+		44CE9BFB2483F11F0058BF23 /* PTPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTPrivate.h; sourceTree = "<group>"; };
+		44CE9BFC2483F11F0058BF23 /* PTProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTProtocol.h; sourceTree = "<group>"; };
+		44CE9BFD2483F11F0058BF23 /* PTUSBHub.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTUSBHub.h; sourceTree = "<group>"; };
+		44CE9BFE2483F11F0058BF23 /* PTChannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTChannel.h; sourceTree = "<group>"; };
+		44CE9C062483F1490058BF23 /* CTPTChannelPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CTPTChannelPrivate.h; path = ../../../../CodeTeleport/CodeTeleport/Sources/Utils/CTPTChannelPrivate.h; sourceTree = "<group>"; };
+		44CE9C072483F14A0058BF23 /* CTPTChannelPrivate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CTPTChannelPrivate.m; path = ../../../../CodeTeleport/CodeTeleport/Sources/Utils/CTPTChannelPrivate.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -171,6 +173,8 @@
 		444301C520E629EE00BD9445 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				44CE9C062483F1490058BF23 /* CTPTChannelPrivate.h */,
+				44CE9C072483F14A0058BF23 /* CTPTChannelPrivate.m */,
 				444301C720E629EE00BD9445 /* CodeTeleportUtils.h */,
 				444301C620E629EE00BD9445 /* CodeTeleportUtils.m */,
 			);
@@ -187,8 +191,8 @@
 		44CE9BC72483B3140058BF23 /* Dependent */ = {
 			isa = PBXGroup;
 			children = (
+				44CE9BF72483F11F0058BF23 /* PTChannel */,
 				44CE9BC82483B3140058BF23 /* GCDAsyncSocket */,
-				44CE9BCC2483B3140058BF23 /* PTChannel */,
 			);
 			path = Dependent;
 			sourceTree = "<group>";
@@ -203,19 +207,19 @@
 			path = GCDAsyncSocket;
 			sourceTree = "<group>";
 		};
-		44CE9BCC2483B3140058BF23 /* PTChannel */ = {
+		44CE9BF72483F11F0058BF23 /* PTChannel */ = {
 			isa = PBXGroup;
 			children = (
-				44CE9BCD2483B3140058BF23 /* PTUSBHub.m */,
-				44CE9BCE2483B3140058BF23 /* PTProtocol.m */,
-				44CE9BCF2483B3140058BF23 /* Peertalk.h */,
-				44CE9BD02483B3140058BF23 /* PTChannel.m */,
-				44CE9BD12483B3140058BF23 /* PTPrivate.h */,
-				44CE9BD22483B3140058BF23 /* PTProtocol.h */,
-				44CE9BD32483B3140058BF23 /* PTUSBHub.h */,
-				44CE9BD42483B3140058BF23 /* PTChannel.h */,
+				44CE9BF82483F11F0058BF23 /* PTUSBHub.m */,
+				44CE9BF92483F11F0058BF23 /* PTProtocol.m */,
+				44CE9BFA2483F11F0058BF23 /* PTChannel.m */,
+				44CE9BFB2483F11F0058BF23 /* PTPrivate.h */,
+				44CE9BFC2483F11F0058BF23 /* PTProtocol.h */,
+				44CE9BFD2483F11F0058BF23 /* PTUSBHub.h */,
+				44CE9BFE2483F11F0058BF23 /* PTChannel.h */,
 			);
-			path = PTChannel;
+			name = PTChannel;
+			path = ../../../../CodeTeleport/CodeTeleport/Sources/Dependent/PTChannel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -225,15 +229,15 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				44CE9BDD2483B3140058BF23 /* PTProtocol.h in Headers */,
+				44CE9C022483F11F0058BF23 /* PTPrivate.h in Headers */,
+				44CE9C052483F11F0058BF23 /* PTChannel.h in Headers */,
 				444301D020E629EE00BD9445 /* CodeTeleportUtils.h in Headers */,
+				44CE9C082483F14A0058BF23 /* CTPTChannelPrivate.h in Headers */,
 				44CE9BD72483B3140058BF23 /* GCDAsyncSocket.h in Headers */,
-				44CE9BDE2483B3140058BF23 /* PTUSBHub.h in Headers */,
+				44CE9C032483F11F0058BF23 /* PTProtocol.h in Headers */,
 				448EF75C20EBA037004549C1 /* CodeTeleportLoader.h in Headers */,
-				44CE9BDC2483B3140058BF23 /* PTPrivate.h in Headers */,
+				44CE9C042483F11F0058BF23 /* PTUSBHub.h in Headers */,
 				444301D620E62A0F00BD9445 /* CodeTeleportClient.h in Headers */,
-				44CE9BDA2483B3140058BF23 /* Peertalk.h in Headers */,
-				44CE9BDF2483B3140058BF23 /* PTChannel.h in Headers */,
 				448EF74F20E8DD9C004549C1 /* CodeTeleportProcessor.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -348,7 +352,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "tmp_path=\"/tmp/com.zhaolei.CodeTeleport\"\nif [ ! -d $tmp_path ]; then\nmkdir $tmp_path\nfi\n\nprintf \"$SRCROOT#$DEVELOPER_DIR#$BUILD_DIR#$DT_TOOLCHAIN_DIR#$PLATFORM_DEVELOPER_SDK_DIR#$TARGET_DEVICE_OS_VERSION#$NATIVE_ARCH_ACTUAL#$TARGET_DEVICE_IDENTIFIER\" > $tmp_path/build_enviroment.configs\n\nenv\n";
+			shellScript = "tmp_path=\"/tmp/com.zhaolei.CodeTeleport\"\nif [ ! -d $tmp_path ]; then\nmkdir $tmp_path\nfi\n\nprintf \"$SRCROOT#$DEVELOPER_DIR#$BUILD_DIR#$DT_TOOLCHAIN_DIR#$SDKROOT#$TARGET_DEVICE_OS_VERSION#$ARCHS#$TARGET_DEVICE_IDENTIFIER#$EXPANDED_CODE_SIGN_IDENTITY#$CODESIGNING_FOLDER_PATH#$FRAMEWORKS_FOLDER_PATH#$EXECUTABLE_PATH#$PRODUCT_NAME\" > $tmp_path/build_enviroment.configs\n\nenv\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -371,11 +375,12 @@
 				444301D720E62A0F00BD9445 /* CodeTeleportClient.m in Sources */,
 				44CE9BD62483B3140058BF23 /* GCDAsyncSocket.m in Sources */,
 				448EF75D20EBA037004549C1 /* CodeTeleportLoader.m in Sources */,
-				44CE9BDB2483B3140058BF23 /* PTChannel.m in Sources */,
+				44CE9C012483F11F0058BF23 /* PTChannel.m in Sources */,
 				444301CF20E629EE00BD9445 /* CodeTeleportUtils.m in Sources */,
-				44CE9BD82483B3140058BF23 /* PTUSBHub.m in Sources */,
+				44CE9C092483F14A0058BF23 /* CTPTChannelPrivate.m in Sources */,
+				44CE9BFF2483F11F0058BF23 /* PTUSBHub.m in Sources */,
 				448EF74E20E8DD9C004549C1 /* CodeTeleportProcessor.m in Sources */,
-				44CE9BD92483B3140058BF23 /* PTProtocol.m in Sources */,
+				44CE9C002483F11F0058BF23 /* PTProtocol.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -441,7 +446,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -493,7 +498,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;

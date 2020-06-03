@@ -26,6 +26,8 @@
 		44CE9BC22483B1880058BF23 /* PTUSBHub.m in Sources */ = {isa = PBXBuildFile; fileRef = 44CE9BBA2483B1870058BF23 /* PTUSBHub.m */; };
 		44CE9BC32483B1880058BF23 /* PTChannel.m in Sources */ = {isa = PBXBuildFile; fileRef = 44CE9BBB2483B1880058BF23 /* PTChannel.m */; };
 		44CE9BC42483B1880058BF23 /* PTProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 44CE9BBE2483B1880058BF23 /* PTProtocol.m */; };
+		44CE9BE22483B7A90058BF23 /* CTUSBServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 44CE9BE12483B7A90058BF23 /* CTUSBServer.m */; };
+		44CE9BE52483F0230058BF23 /* CTPTChannelPrivate.m in Sources */ = {isa = PBXBuildFile; fileRef = 44CE9BE42483F0230058BF23 /* CTPTChannelPrivate.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -64,9 +66,12 @@
 		44CE9BBC2483B1880058BF23 /* PTProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTProtocol.h; sourceTree = "<group>"; };
 		44CE9BBD2483B1880058BF23 /* PTPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTPrivate.h; sourceTree = "<group>"; };
 		44CE9BBE2483B1880058BF23 /* PTProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PTProtocol.m; sourceTree = "<group>"; };
-		44CE9BBF2483B1880058BF23 /* Peertalk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Peertalk.h; sourceTree = "<group>"; };
 		44CE9BC02483B1880058BF23 /* PTChannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTChannel.h; sourceTree = "<group>"; };
 		44CE9BC12483B1880058BF23 /* PTUSBHub.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PTUSBHub.h; sourceTree = "<group>"; };
+		44CE9BE02483B7A90058BF23 /* CTUSBServer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CTUSBServer.h; sourceTree = "<group>"; };
+		44CE9BE12483B7A90058BF23 /* CTUSBServer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CTUSBServer.m; sourceTree = "<group>"; };
+		44CE9BE32483F0230058BF23 /* CTPTChannelPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CTPTChannelPrivate.h; sourceTree = "<group>"; };
+		44CE9BE42483F0230058BF23 /* CTPTChannelPrivate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CTPTChannelPrivate.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,6 +135,8 @@
 				444301A920E6267300BD9445 /* Utils */,
 				444301A620E6263A00BD9445 /* CodeTeleportServer.h */,
 				444301A720E6263A00BD9445 /* CodeTeleportServer.m */,
+				44CE9BE02483B7A90058BF23 /* CTUSBServer.h */,
+				44CE9BE12483B7A90058BF23 /* CTUSBServer.m */,
 				444301D820E6509200BD9445 /* CTBuilder.h */,
 				444301D920E6509200BD9445 /* CTBuilder.m */,
 				444301DB20E653C800BD9445 /* CTProcessor.h */,
@@ -154,6 +161,8 @@
 			children = (
 				444301AA20E6268900BD9445 /* CTUtils.h */,
 				444301AB20E6268900BD9445 /* CTUtils.m */,
+				44CE9BE32483F0230058BF23 /* CTPTChannelPrivate.h */,
+				44CE9BE42483F0230058BF23 /* CTPTChannelPrivate.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -208,7 +217,6 @@
 		44CE9BB92483B15A0058BF23 /* PTChannel */ = {
 			isa = PBXGroup;
 			children = (
-				44CE9BBF2483B1880058BF23 /* Peertalk.h */,
 				44CE9BC02483B1880058BF23 /* PTChannel.h */,
 				44CE9BBB2483B1880058BF23 /* PTChannel.m */,
 				44CE9BBD2483B1880058BF23 /* PTPrivate.h */,
@@ -302,10 +310,12 @@
 				4443019020E6203000BD9445 /* main.m in Sources */,
 				44CE9BC42483B1880058BF23 /* PTProtocol.m in Sources */,
 				44CE9BC32483B1880058BF23 /* PTChannel.m in Sources */,
+				44CE9BE52483F0230058BF23 /* CTPTChannelPrivate.m in Sources */,
 				444301DA20E6509200BD9445 /* CTBuilder.m in Sources */,
 				444301E320E6548300BD9445 /* DDHotKeyUtilities.m in Sources */,
 				444301E420E6548300BD9445 /* DDHotKeyCenter.m in Sources */,
 				4443018820E6202F00BD9445 /* AppDelegate.m in Sources */,
+				44CE9BE22483B7A90058BF23 /* CTUSBServer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

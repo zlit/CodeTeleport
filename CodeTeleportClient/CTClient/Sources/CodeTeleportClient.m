@@ -10,6 +10,11 @@
 #import "CodeTeleportUtils.h"
 #import "GCDAsyncSocket.h"
 #import "CodeTeleportProcessor.h"
+#import "PTUSBHub.h"
+#import "PTChannel.h"
+#import "PTProtocol.h"
+#import "CTPTChannelPrivate.h"
+#import <UIKit/UIKit.h>
 
 // weak define GCDAsyncSocket
 
@@ -84,12 +89,18 @@ asm(".weak_definition _OBJC_IVAR_$_GCDAsyncSocket.connectInterface4");
 asm(".weak_definition _OBJC_IVAR_$_GCDAsyncSocket.readSource");
 
 #define kLocalHost @"127.0.0.1"
-#define kServerPort 10000
+#define kServerPort 18888
 
-static GCDAsyncSocket *_asyncSocket;
+static CodeTeleportClient *server;
 
-@interface CodeTeleportClient()<GCDAsyncSocketDelegate>{
+@interface CodeTeleportClient()<GCDAsyncSocketDelegate,PTChannelDelegate>{
     CodeTeleportProcessor *_processor;
+
+    PTChannel *_serverChannel;
+    PTChannel *_peerChannel;
+    
+    GCDAsyncSocket *_asyncSocket;
+    GCDAsyncSocket *_newSocket;
 }
 
 @property(strong,nonatomic) CodeTeleportClient* strongSelf;
@@ -99,73 +110,189 @@ static GCDAsyncSocket *_asyncSocket;
 @implementation CodeTeleportClient
 
 +(void)load{
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        CTLog(@"CodeTeleportClient load. Avoid affecting startup performance,dispatch_after 5s.");
-        [CodeTeleportClient connectToServer];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)),
+                   dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        CTLog(@"CodeTeleportClient load. Avoid affecting startup performance,dispatch_after 3s.");
+        
+        if (TARGET_IPHONE_SIMULATOR) {
+            [CodeTeleportClient startListeningNetConnect];
+        } else {
+            [CodeTeleportClient startListeningUSBConnect];
+        }
     });
 }
 
-+ (void)connectToServer
++ (void)startListeningUSBConnect
 {
-    _asyncSocket = [[GCDAsyncSocket alloc] initWithDelegate:[[CodeTeleportClient alloc] init] delegateQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)];
-    
-    NSError *socketError = nil;
-    if ([_asyncSocket connectToHost:kLocalHost onPort:kServerPort error:&socketError])
-    {
-        CTLog(@"connected to server");
-    }
-    
-    if (socketError) {
-        CTLog(@"failed to connect to server: %@", socketError);
-    }
+    CodeTeleportClient *strongClient = [[CodeTeleportClient alloc] init];
+    strongClient->_serverChannel = [PTChannel channelWithDelegate:strongClient];
+    [strongClient->_serverChannel listenOnPort:kUSBListenPort
+                                   IPv4Address:INADDR_LOOPBACK
+                                      callback:^(NSError *error) {
+        if (error) {
+            CTLog(@"channel connect failed : %@", error);
+        }else{
+            CTLog(@"channel connect success");
+        }
+    }];
 }
 
-- (instancetype)init
++ (void)startListeningNetConnect
 {
-    self = [super init];
-    if (self) {
-        self.strongSelf = self;
+    server = [[CodeTeleportClient alloc] init];
+    server->_asyncSocket = [[GCDAsyncSocket alloc] initWithDelegate:server
+                                                     delegateQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)];
+    [server->_asyncSocket setAutoDisconnectOnClosedReadStream:NO];
+    
+    NSError *socketError = nil;
+    if ([server->_asyncSocket acceptOnInterface:kLocalHost
+                                           port:kServerPort
+                                          error:&socketError]) {
+        CTLog(@"accept on %@:%d",kLocalHost, kServerPort);
     }
-    return self;
+
+    if (socketError) {
+        CTLog(@"accept faild: %@", socketError);
+    }
 }
 
 #pragma mark - AsyncSocketDelegate
 
-- (void)socket:(GCDAsyncSocket *)sock didConnectToHost:(NSString *)host port:(uint16_t)port
+- (CodeTeleportProcessor *)buildNewProcessorForSocket
 {
-    _processor = [self buildNewProcessor];
-    CTLog(@"didConnectToHost: %@, port: %d.",host,port);
-    [_asyncSocket readDataWithTimeout:-1 tag:0];
+    CodeTeleportProcessor *processor = [[CodeTeleportProcessor alloc] init];
+    processor.processResponseBlock = ^(CodeTeleportProcessor *builder,NSString* msg){
+        [self->_newSocket writeData:[msg dataUsingEncoding:NSUTF8StringEncoding]
+                        withTimeout:-1
+                                tag:0];
+    };
+    return processor;
+}
+
+- (void)socket:(GCDAsyncSocket *)sender didAcceptNewSocket:(GCDAsyncSocket *)newSocket
+{
+    NSString *remoteHost = [newSocket connectedHost];
+    UInt16    remotePort = [newSocket connectedPort];
+    CTLog(@"accepted new client %@:%hu", remoteHost, remotePort);
+    [self closeCurrentSocket];
+    
+    _newSocket = newSocket;
+    _processor = [self buildNewProcessorForSocket];
+    
+    [_newSocket writeData:[@"HELLO " dataUsingEncoding:NSUTF8StringEncoding]
+              withTimeout:-1
+                      tag:0];
 }
 
 - (void)socket:(GCDAsyncSocket *)sock didWriteDataWithTag:(long)tag {
     CTLog(@"didWriteDataWithTag:%lu",tag);
-    [_asyncSocket readDataWithTimeout:-1 tag:0];
+    [_newSocket readDataWithTimeout:-1 tag:0];
 }
 
 - (void)socket:(GCDAsyncSocket *)sender didReadData:(NSData *)data withTag:(long)tag
 {
     NSString *readString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    CTLog(@"didReadData: %@", readString);
+    CTLog(@" didReadData: %@, tag: %lu", readString,tag);
     [_processor processMessage:readString];
-    [_asyncSocket readDataWithTimeout:-1 tag:0];
 }
 
 - (void)socketDidDisconnect:(GCDAsyncSocket *)sock withError:(NSError *)err
 {
     CTLog(@"disconnected: %@, %@", sock, err);
-    self.strongSelf = nil;
+    [self closeCurrentSocket];
 }
 
-- (CodeTeleportProcessor *)buildNewProcessor
+- (void)closeCurrentSocket{
+    if (_newSocket) {
+        CTLog(@"close old client %@:%hu", [_newSocket connectedHost], [_newSocket connectedPort]);
+        [_newSocket disconnect];
+        _newSocket = nil;
+    }
+}
+
+#pragma mark - PTChannelDelegate
+
+- (CodeTeleportProcessor *)buildNewProcessorForUSB
 {
     CodeTeleportProcessor *processor = [[CodeTeleportProcessor alloc] init];
     processor.processResponseBlock = ^(CodeTeleportProcessor *builder,NSString* msg){
-        [_asyncSocket writeData:[msg dataUsingEncoding:NSUTF8StringEncoding]
-                    withTimeout:-1
-                            tag:0];
+        [self sendChannelTextMsg:msg];
     };
     return processor;
+}
+
+- (void)sendChannelTextMsg:(NSString *)msg
+{
+    if (self->_peerChannel) {
+        dispatch_data_t paylaod = [CTPTChannelPrivate parseNSStringToTextFrameData:msg];
+        [self->_peerChannel sendFrameOfType:CTDataTypeText
+                                        tag:PTFrameNoTag
+                                withPayload:paylaod
+                                   callback:^(NSError *error) {
+            if (error) {
+                CTLog(@"failed to send msg : %@",msg);
+            }
+        }];
+    }
+}
+
+- (void)ioFrameChannel:(PTChannel *)channel
+   didAcceptConnection:(PTChannel *)otherChannel
+           fromAddress:(PTAddress *)address
+{
+    if (self->_peerChannel) {
+        [self->_peerChannel cancel];
+        self->_peerChannel = nil;
+    }
+    self->_peerChannel = otherChannel;
+    self->_peerChannel.userInfo = address;
+    CTLog(@"didAcceptUSBConnection : %@", address);
+    _processor = [self buildNewProcessorForUSB];
+    
+    NSString *helloMsg = [NSString stringWithFormat:@"HELLO#This message is from device:[%@ %@ %@]"
+                          ,[UIDevice currentDevice].name
+                          ,[UIDevice currentDevice].model
+                          ,[UIDevice currentDevice].systemVersion];
+    
+    [self sendChannelTextMsg:helloMsg];
+}
+
+- (void)ioFrameChannel:(PTChannel *)channel
+       didEndWithError:(NSError *)error
+{
+    CTLog(@"channel didEndWithError : %@", error);
+}
+
+- (void)ioFrameChannel:(PTChannel *)channel
+ didReceiveFrameOfType:(uint32_t)type
+                   tag:(uint32_t)tag
+               payload:(PTData *)payload
+{
+    if (type == CTDataTypeText) {
+        NSString *msg = [CTPTChannelPrivate parseTextFrameToNSString:(CTMessageTextFrame *)payload.data];
+        CTLog(@"receive text msg : %@", msg);
+        [_processor processMessage:msg];
+    } else if (type == CTDataTypeDylib) {
+        CTDylibDataFrame *dylibFrame = (CTDylibDataFrame*)payload.data;
+        dylibFrame->length = ntohl(dylibFrame->length);
+
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsDirectory = [paths objectAtIndex:0];
+
+        NSString *dylibTempPath = [documentsDirectory stringByAppendingString:@"/CodeTeleport"];
+        // 清理之前的缓存
+        [[NSFileManager defaultManager] removeItemAtPath:dylibTempPath error:nil];
+        [[NSFileManager defaultManager] createDirectoryAtPath:dylibTempPath withIntermediateDirectories:YES attributes:nil error:nil];
+
+        dylibTempPath = [dylibTempPath stringByAppendingFormat:@"/%.0f.dylib", [[NSDate date] timeIntervalSince1970]];
+        NSData *dylibData = [NSData dataWithBytes:dylibFrame->data
+                                           length:dylibFrame->length];
+        [dylibData writeToFile:dylibTempPath
+                    atomically:YES];
+        
+        NSString *loadDylibMsg = [NSString stringWithFormat:@"TELEPORT %@",dylibTempPath];
+        [_processor processMessage:loadDylibMsg];
+    }
 }
 
 -(void)dealloc{
