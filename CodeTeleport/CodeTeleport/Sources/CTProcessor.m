@@ -61,6 +61,7 @@
         BOOL success = [self setupBuilderProperty:clientInfoList];
         if(success){
             [self startWatcher];
+            [self.builder setEviromentArgsComplete];
         }
     }else if ([message hasPrefix:@"COMPLETE "]) {
         if(appdelegate().urlScheme.length > 0){

@@ -149,6 +149,10 @@ static CTUSBServer *connector;
                 self->_connectedChannel = channel;
                 self->_processor = [self buildNewProcessor];
                 [self sendChannelTextMsg:@"HELLO "];
+                
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [appdelegate() setStatusIcon:StatusIconTypeActive];
+                });
             }
         }];
     }
@@ -162,6 +166,11 @@ static CTUSBServer *connector;
     [self->_connectedChannel close];
     self->_connectedChannel = nil;
     self->_connectedDeviceID = nil;
+    
+    self->_processor = nil;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [appdelegate() setStatusIcon:StatusIconTypeIdle];
+    });
 }
 
 - (void)ioFrameChannel:(PTChannel *)channel

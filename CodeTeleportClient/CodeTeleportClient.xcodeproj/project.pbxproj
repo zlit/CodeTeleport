@@ -21,7 +21,6 @@
 		448EF75D20EBA037004549C1 /* CodeTeleportLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 448EF75B20EBA037004549C1 /* CodeTeleportLoader.m */; };
 		448EF76E20EF0253004549C1 /* CTClient.framework in Resources */ = {isa = PBXBuildFile; fileRef = 444301B220E6299F00BD9445 /* CTClient.framework */; };
 		448EF7E520F5FE9E004549C1 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 448EF7E420F5FE9E004549C1 /* Default-568h@2x.png */; };
-		44BFD7C120F8812F004263AB /* CTClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 444301B220E6299F00BD9445 /* CTClient.framework */; };
 		44CE9BD52483B3140058BF23 /* Documentation.html in Resources */ = {isa = PBXBuildFile; fileRef = 44CE9BC92483B3140058BF23 /* Documentation.html */; };
 		44CE9BD62483B3140058BF23 /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 44CE9BCA2483B3140058BF23 /* GCDAsyncSocket.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		44CE9BD72483B3140058BF23 /* GCDAsyncSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = 44CE9BCB2483B3140058BF23 /* GCDAsyncSocket.h */; };
@@ -34,6 +33,8 @@
 		44CE9C052483F11F0058BF23 /* PTChannel.h in Headers */ = {isa = PBXBuildFile; fileRef = 44CE9BFE2483F11F0058BF23 /* PTChannel.h */; };
 		44CE9C082483F14A0058BF23 /* CTPTChannelPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 44CE9C062483F1490058BF23 /* CTPTChannelPrivate.h */; };
 		44CE9C092483F14A0058BF23 /* CTPTChannelPrivate.m in Sources */ = {isa = PBXBuildFile; fileRef = 44CE9C072483F14A0058BF23 /* CTPTChannelPrivate.m */; };
+		44CE9C0A2488AECB0058BF23 /* CTClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 444301B220E6299F00BD9445 /* CTClient.framework */; };
+		44CE9C0B2488AECB0058BF23 /* CTClient.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 444301B220E6299F00BD9445 /* CTClient.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				44CE9C0B2488AECB0058BF23 /* CTClient.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -98,7 +100,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				44BFD7C120F8812F004263AB /* CTClient.framework in Frameworks */,
+				44CE9C0A2488AECB0058BF23 /* CTClient.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -564,7 +566,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACH_O_TYPE = staticlib;
+				MACH_O_TYPE = mh_dylib;
 				PRODUCT_BUNDLE_IDENTIFIER = com.zhaolei.lzl.CodeTeleport;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -592,7 +594,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACH_O_TYPE = staticlib;
+				MACH_O_TYPE = mh_dylib;
 				PRODUCT_BUNDLE_IDENTIFIER = com.zhaolei.lzl.CodeTeleport;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;

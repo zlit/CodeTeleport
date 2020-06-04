@@ -36,25 +36,25 @@ static int kThreadIndex = 1;
 @property(nonatomic,copy) NSString *buildTaskPath;
 @property(nonatomic,copy) NSString *timestamp;
 @property(nonatomic,strong) NSMutableDictionary *compileCommandCache;
-@property(nonatomic,strong) NSString *compileCommandTemplate;
+@property(nonatomic,strong) NSMutableDictionary *compileCommandTemplateCache;
 @end
 
 @implementation CTBuilder
 
 - (void)dealloc
 {
-    [self saveCompileCommandTemplateAndCache];
+    [self saveCompileCommandCache];
 }
 
 - (NSString *)commandTemplateKey
 {
-    NSString *commandTemplateKey = [NSString stringWithFormat:@"%@_commandTemplateKey",self.projectPath];
+    NSString *commandTemplateKey = [NSString stringWithFormat:@"%@_%@_commandTemplateKey",self.arch,self.projectPath];
     return commandTemplateKey;
 }
 
 - (NSString *)compileCommandCacheKey
 {
-    NSString *compileCommandCacheKey = [NSString stringWithFormat:@"%@_compileCommandCacheKey",self.projectPath];
+    NSString *compileCommandCacheKey = [NSString stringWithFormat:@"%@_%@_compileCommandCacheKey",self.arch,self.projectPath];
     return compileCommandCacheKey;
 }
 
@@ -68,19 +68,16 @@ static int kThreadIndex = 1;
         const char *label = [[NSString stringWithFormat:@"TeleportQueue_%d",kThreadIndex] cStringUsingEncoding:NSUTF8StringEncoding];
         _teleportQueue = dispatch_queue_create(label, DISPATCH_QUEUE_SERIAL);
         self.compileCommandCache = [[NSMutableDictionary alloc] init];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(saveCompileCommandTemplateAndCache)
-                                                     name:@"CTApplicationQuitEventTriggering"
-                                                   object:nil];
+        self.compileCommandTemplateCache = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
 
-- (void)saveCompileCommandTemplateAndCache
+- (void)saveCompileCommandCache
 {
-    if (self.compileCommandTemplate.length > 0) {
-        [[NSUserDefaults standardUserDefaults] setObject:self.compileCommandTemplate
-                                                  forKey:[self compileCommandTemplate]];
+    if ([[self.compileCommandTemplateCache allKeys] count] > 0) {
+        [[NSUserDefaults standardUserDefaults] setObject:self.compileCommandTemplateCache
+                                                  forKey:[self commandTemplateKey]];
     }
     
     if ([[self.compileCommandCache allKeys] count] > 0) {
@@ -105,14 +102,21 @@ static int kThreadIndex = 1;
     }
     [self setValue:arg forKey:property];
     CTLog(@"set %@ to %@",[self valueForKey:property],property);
- 
+}
+
+- (void)setEviromentArgsComplete
+{
     //load compileCommandTemplate and compileCommandCache
-    if ([property isEqualToString:@"projectPath"]) {
-        self.compileCommandTemplate = [[NSUserDefaults standardUserDefaults] objectForKey:[self commandTemplateKey]];
-        self.compileCommandCache = [[NSUserDefaults standardUserDefaults] objectForKey:[self compileCommandCacheKey]];
-        if (self.compileCommandCache == nil) {
-            self.compileCommandCache = [[NSMutableDictionary alloc] init];
-        }
+    NSDictionary *loacTemplateDict = [[NSUserDefaults standardUserDefaults] dictionaryForKey:[self commandTemplateKey]];
+    if (loacTemplateDict != nil
+        && [[loacTemplateDict allKeys] count] > 0) {
+        [self.compileCommandTemplateCache addEntriesFromDictionary:loacTemplateDict];
+    }
+    
+    NSDictionary *loacCommandCacheDict = [[NSUserDefaults standardUserDefaults] dictionaryForKey:[self compileCommandCacheKey]];
+    if (loacCommandCacheDict != nil
+        && [[loacCommandCacheDict allKeys] count] > 0) {
+        [self.compileCommandCache addEntriesFromDictionary:loacCommandCacheDict];
     }
 }
 
@@ -192,9 +196,13 @@ static int kThreadIndex = 1;
             
             //3. compileCommand from commandTemplate, file's configuration is difference , maybe some mistake.
             if (compileCommand.length == 0
-                && self.compileCommandTemplate.length > 0) {
-                [compileCommand stringByReplacingOccurrencesOfString:kTemplateKey
-                                                          withString:modifyFile];
+                && [[self.compileCommandTemplateCache allKeys] count] > 0) {
+                
+                NSString *compileCommandTemplate = [self.compileCommandTemplateCache objectForKey:self.arch];
+                if (compileCommandTemplate.length > 0) {
+                    compileCommand = [compileCommandTemplate stringByReplacingOccurrencesOfString:kTemplateKey
+                                                                                       withString:modifyFile];
+                }
             }
             
             if(compileCommand.length == 0
@@ -210,16 +218,17 @@ static int kThreadIndex = 1;
         
         BOOL result = [CTUtils executeShellCommand:executeCommand];
         if(result){
-            
             //if compileCommand work, create a template
-            self.compileCommandTemplate = [compileCommand stringByReplacingOccurrencesOfString:modifyFile
-                                                                                    withString:kTemplateKey];
+            NSString *compileCommandTemplate = [compileCommand stringByReplacingOccurrencesOfString:modifyFile
+                                                                                         withString:kTemplateKey];
+            [self.compileCommandTemplateCache setObject:compileCommandTemplate
+                                                 forKey:self.arch];
+            
             //if compileCommand work, save to cache
             [self.compileCommandCache setObject:compileCommand
                                          forKey:modifyFile];
-            [compileFileList addObject:_compileExecutablePath];
             
-            [self saveCompileCommandTemplateAndCache];
+            [compileFileList addObject:_compileExecutablePath];
         }else{
             [self.compileCommandCache removeObjectForKey:modifyFile];
             NSString *errorMsg = [@"compile fialed. \n " stringByAppendingString:[CTUtils readLogWithPath:_compileLogPath]];
@@ -253,6 +262,7 @@ static int kThreadIndex = 1;
     }
     
     if(self.buildCompletedBlock){
+        [self saveCompileCommandCache];
         self.buildCompletedBlock(self,_dylibPath);
         [self.waitingForTeleport removeAllObjects];
         CTLog(@"buildCompleted,clean waitingForTeleport files");

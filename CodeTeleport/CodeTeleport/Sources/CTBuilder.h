@@ -42,6 +42,7 @@ typedef void(^BuildFailedBlock)(CTBuilder *builder,NSString* msg);
 
 - (BOOL)checkConfigValid;
 
+- (void)setEviromentArgsComplete;
 
 - (void)addModifyFilePaths:(NSArray *) filePaths;
 
