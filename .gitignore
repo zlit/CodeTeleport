@@ -6,3 +6,4 @@ CodeTeleportClient/Output/Products/CodeTeleport.app
 CodeTeleportClient/Output/Products/CTClient.framework
 CodeTeleport/CodeTeleport.xcodeproj/xcuserdata/
 CodeTeleportClient/CodeTeleportClient.xcodeproj/xcuserdata/zhaolei.xcuserdatad/xcschemes/xcschememanagement.plist
+CodeTeleportClient/Product/*
