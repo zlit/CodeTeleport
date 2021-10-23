@@ -50,7 +50,7 @@
     self.view.backgroundColor = [UIColor whiteColor];
     
     self.demoView = [[UIView alloc] initWithFrame:CGRectMake(50, 100, 100, 100)];
-    self.demoView.backgroundColor = [UIColor yellowColor];
+    self.demoView.backgroundColor = [UIColor redColor];
     
     [self.view addSubview:self.demoView];
 }

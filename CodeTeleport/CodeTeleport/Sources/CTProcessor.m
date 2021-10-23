@@ -171,21 +171,18 @@
                  isDirectory:NO];
         
         {
-            NSInteger index = ++argIndex;
-            if ([args count] < index) {
-                NSString *pathStr = [args objectAtIndex:index];
-                if(pathStr.length>0){
-                    NSMutableArray *pathArray = [NSMutableArray array];
-                    NSArray *splitArray = [pathStr componentsSeparatedByString:@","];
-                    for (NSString *tempPath in splitArray){
-                        NSURL *candidateURL = [NSURL fileURLWithPath:tempPath];
-                        if (candidateURL && candidateURL.scheme){
-                            [pathArray addObject:tempPath];
-                        }
+            NSString *pathStr = [args objectAtIndex:++argIndex];
+            if(pathStr.length>0){
+                NSMutableArray *pathArray = [NSMutableArray array];
+                NSArray *splitArray = [pathStr componentsSeparatedByString:@","];
+                for (NSString *tempPath in splitArray){
+                    NSURL *candidateURL = [NSURL fileURLWithPath:tempPath];
+                    if (candidateURL && candidateURL.scheme){
+                        [pathArray addObject:tempPath];
                     }
-                    if([pathArray count]>0){
-                        self.builder.localPodProjectPaths = pathArray;
-                    }
+                }
+                if([pathArray count]>0){
+                    self.builder.localPodProjectPaths = pathArray;
                 }
             }
         }
