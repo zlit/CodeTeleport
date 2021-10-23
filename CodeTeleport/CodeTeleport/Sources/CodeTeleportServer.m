@@ -90,7 +90,10 @@ static CodeTeleportServer *localConnector;
 
 - (void)socket:(GCDAsyncSocket *)sock didConnectToHost:(NSString *)host port:(uint16_t)port
 {
-    _processor = [self buildNewProcessor];
+    @synchronized ([CodeTeleportServer class]) {
+        _processor = [self buildNewProcessor];
+    }
+    
     CTLog(@"didConnectToHost: %@, port: %d.",host,port);
     
     [_asyncSocket writeData:[@"HELLO " dataUsingEncoding:NSUTF8StringEncoding]
@@ -98,7 +101,7 @@ static CodeTeleportServer *localConnector;
                         tag:0];
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [appdelegate() setStatusIcon:StatusIconTypeActive];
+        [appdelegate() setStatusIcon:StatusIconTypeActive formServer:kFormNetwork];
     });
 }
 
@@ -120,9 +123,11 @@ static CodeTeleportServer *localConnector;
 {
     CTLog(@"disconnected: %@, %@", sock, err);
     _asyncSocket = nil;
-    _processor = nil;
+    @synchronized ([CodeTeleportServer class]) {
+        _processor = nil;
+    }
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [appdelegate() setStatusIcon:StatusIconTypeIdle];
+        [appdelegate() setStatusIcon:StatusIconTypeIdle formServer:kFormNetwork];
     });
 }
 

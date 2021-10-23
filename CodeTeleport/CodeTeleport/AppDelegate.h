@@ -9,6 +9,12 @@
 #import <Cocoa/Cocoa.h>
 
 typedef enum : NSUInteger {
+    kFormIdle,
+    kFormNetwork,
+    kFormUSB
+} kFormServer;
+
+typedef enum : NSUInteger {
     StatusIconTypeIdle,
     StatusIconTypeActive
 } StatusIconType;
@@ -19,7 +25,7 @@ typedef enum : NSUInteger {
 
 @property(nonatomic,copy) NSString *monitorFilePath;
 
-- (void)setStatusIcon:(StatusIconType) state;
+- (void)setStatusIcon:(StatusIconType) state formServer:(kFormServer)formServer;
 - (void)showCompeledNotice:(NSString *)notice;
 
 @end

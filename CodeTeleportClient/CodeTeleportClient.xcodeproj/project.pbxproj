@@ -354,7 +354,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "tmp_path=\"/tmp/com.zhaolei.CodeTeleport\"\nif [ ! -d $tmp_path ]; then\nmkdir $tmp_path\nfi\n\nprintf \"$SRCROOT#$DEVELOPER_DIR#$BUILD_DIR#$DT_TOOLCHAIN_DIR#$SDKROOT#$TARGET_DEVICE_OS_VERSION#$ARCHS#$TARGET_DEVICE_IDENTIFIER#$EXPANDED_CODE_SIGN_IDENTITY#$CODESIGNING_FOLDER_PATH#$FRAMEWORKS_FOLDER_PATH#$EXECUTABLE_PATH#$PRODUCT_NAME\" > $tmp_path/build_enviroment.configs\n\nenv\n";
+			shellScript = "tmp_path=\"/tmp/com.zhaolei.CodeTeleport\"\nif [ ! -d $tmp_path ]; then\nmkdir $tmp_path\nfi\n\necho '$SRCROOT : ' $SRCROOT\necho '$DEVELOPER_DIR : ' $DEVELOPER_DIR\necho '$BUILD_DIR : ' $BUILD_DIR \necho '$DT_TOOLCHAIN_DIR : ' $DT_TOOLCHAIN_DIR\necho '$SDKROOT : ' $SDKROOT\necho '$TARGET_DEVICE_OS_VERSION : ' $TARGET_DEVICE_OS_VERSION\necho '$EXPANDED_CODE_SIGN_IDENTITER : ' $EXPANDED_CODE_SIGN_IDENTITER\necho '$CODESIGNING_FOLDER_PATH : ' $CODESIGNING_FOLDER_PATH\necho '$FRAMEWORKS_FOLDER_PATH : ' $FRAMEWORKS_FOLDER_PATH\necho '$EXECUTABLE_PATH : ' $EXECUTABLE_PATH\necho '$PRODUCT_NAME : ' $PRODUCT_NAME\n\nprintf \"$SRCROOT#$DEVELOPER_DIR#$BUILD_DIR#$DT_TOOLCHAIN_DIR#$SDKROOT#$TARGET_DEVICE_OS_VERSION#$ARCHS#$TARGET_DEVICE_IDENTIFIER#$EXPANDED_CODE_SIGN_IDENTITY#$CODESIGNING_FOLDER_PATH#$FRAMEWORKS_FOLDER_PATH#$EXECUTABLE_PATH#$PRODUCT_NAME\" > $tmp_path/build_enviroment.configs\n\n#env\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */

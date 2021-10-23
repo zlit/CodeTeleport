@@ -16,6 +16,10 @@ typedef void (^TeleportCallback)(NSArray *filesChanged);
 
 @property(copy) TeleportCallback callback;
 
-- (instancetype)initWithRoot:(NSString *)projectRoot plugin:(TeleportCallback)callback;
+- (instancetype)initWithRoot:(NSString *)projectRoot
+                      plugin:(TeleportCallback)callback;
+
+- (instancetype)initWithRoots:(NSArray *)projectRoots
+                       plugin:(TeleportCallback)callback;
 
 @end

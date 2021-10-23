@@ -43,7 +43,7 @@
                     [self writeResponse:@"COMPLETE " msg:[classNames componentsJoinedByString:@"|"]];  
                 }else{
                     CTLog(@"load Dylib failed : %@",error);
-                    [self writeResponse:@"FAILED " msg:[error description]];
+                    [self writeResponse:@"FAILED " msg:[error localizedDescription]];
                 }
             });
         } else {
@@ -53,6 +53,7 @@
     }else if([message hasPrefix:@"ERROR "]){
         NSString *errorInfo = [message substringFromIndex:@"ERROR ".length];
         CTLog(@"ServerError:%@",errorInfo);
+        [self writeResponse:@"FAILED " msg:errorInfo?:@"Get Error."];
     }
     
 }

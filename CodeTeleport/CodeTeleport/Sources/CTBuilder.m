@@ -231,7 +231,7 @@ static int kThreadIndex = 1;
             [compileFileList addObject:_compileExecutablePath];
         }else{
             [self.compileCommandCache removeObjectForKey:modifyFile];
-            NSString *errorMsg = [@"compile fialed. \n " stringByAppendingString:[CTUtils readLogWithPath:_compileLogPath]];
+            NSString *errorMsg = [@"compile fialed. for details : " stringByAppendingString:_compileLogPath];
             if(self.buildFailedBlock){
                 self.buildFailedBlock(self,errorMsg);
             }
@@ -295,7 +295,7 @@ static int kThreadIndex = 1;
 
 - (NSString *)runScriptCommand:(NSString *)modifyFile
 {
-    return [NSString stringWithFormat:@"time(python %@ %@ %@ %@ %@ %@)",self.scriptPath,self.derivedLogs,modifyFile,self.projectPath,_compileCommandPath,_arch];
+    return [NSString stringWithFormat:@"time(python %@ %@ \"%@\" %@ %@ %@)",self.scriptPath,self.derivedLogs,modifyFile,self.projectPath,_compileCommandPath,_arch];
 }
 
 - (NSString *)archDylibCommand:(NSMutableArray *) compileFileList
@@ -306,7 +306,6 @@ static int kThreadIndex = 1;
             -ObjC\
             -isysroot\
             %@\
-            -mios-simulator-version-min=%@\
             -undefined\
             dynamic_lookup\
             -dead_strip \
@@ -317,7 +316,7 @@ static int kThreadIndex = 1;
             -F \"%@\"\
             -rpath \"%@\"\
             -o %@\
-            > %@  2>&1)",self.xctoolchain,self.arch,self.sdkDir,self.targetOSVersion,[compileFileList componentsJoinedByString:@" "],self.frameworksPath,self.frameworksPath,self.frameworksPath,_dylibPath,_linkLogPath];
+            > %@  2>&1)",self.xctoolchain,self.arch,self.sdkDir,[compileFileList componentsJoinedByString:@" "],self.frameworksPath,self.frameworksPath,self.frameworksPath,_dylibPath,_linkLogPath];
 }
 
 - (NSString *)codeSignCommandWithDylibPath:(NSString *) dylibPath

@@ -48,12 +48,24 @@ projects.each do|project|
                 mkdir $tmp_path
             fi
 
+            echo '$SRCROOT : ' $SRCROOT
+            echo '$DEVELOPER_DIR : ' $DEVELOPER_DIR
+            echo '$BUILD_DIR : ' $BUILD_DIR 
+            echo '$DT_TOOLCHAIN_DIR : ' $DT_TOOLCHAIN_DIR
+            echo '$SDKROOT : ' $SDKROOT
+            echo '$TARGET_DEVICE_OS_VERSION : ' $TARGET_DEVICE_OS_VERSION
+            echo '$EXPANDED_CODE_SIGN_IDENTITER : ' $EXPANDED_CODE_SIGN_IDENTITER
+            echo '$CODESIGNING_FOLDER_PATH : ' $CODESIGNING_FOLDER_PATH
+            echo '$FRAMEWORKS_FOLDER_PATH : ' $FRAMEWORKS_FOLDER_PATH
+            echo '$EXECUTABLE_PATH : ' $EXECUTABLE_PATH
+            echo '$PRODUCT_NAME : ' $PRODUCT_NAME
+
             echo save build enviroment to $tmp_path/build_enviroment.configs.
 
-            printf "$SRCROOT\#$DEVELOPER_DIR\#$BUILD_DIR\#$DT_TOOLCHAIN_DIR\#$PLATFORM_DEVELOPER_SDK_DIR\#$TARGET_DEVICE_OS_VERSION\#$NATIVE_ARCH_ACTUAL\#$TARGET_DEVICE_IDENTIFIER" > $tmp_path/build_enviroment.configs
+            print "$SRCROOT#$DEVELOPER_DIR#$BUILD_DIR#$DT_TOOLCHAIN_DIR#$SDKROOT#$TARGET_DEVICE_OS_VERSION#$EXPANDED_CODE_SIGN_IDENTITER#$CODESIGNING_FOLDER_PATH#$FRAMEWORKS_FOLDER_PATH#$EXECUTABLE_PATH#$PRODUCT_NAME" $tmp_path/build_enviroment.configs
 
-            echo "open $app_path"
-            open $app_path
+            # echo "open $app_path"
+            # open $app_path
         fi
         EOS
         script_phase.show_env_vars_in_log = "0"

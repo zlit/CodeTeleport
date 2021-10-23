@@ -78,6 +78,10 @@ if __name__ == "__main__":
     TEMP_FILE_PATH = sys.argv[4]
     ARCH = sys.argv[5]
 
+    #FILE_PATH可能会因为字符未转义的问题，导致查找失败,下面解决了其中一种带括号的情况
+    #更多符号详见：https://unix.stackexchange.com/questions/347332/what-characters-need-to-be-escaped-in-files-without-quotes
+    FILE_PATH = FILE_PATH.replace('(','\(')
+    FILE_PATH = FILE_PATH.replace(')','\)')
 
     print 'LOGS_DIR : '+LOGS_DIR
     print 'FILE_PATH : '+FILE_PATH

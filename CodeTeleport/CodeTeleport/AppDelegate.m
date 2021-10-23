@@ -22,6 +22,12 @@
 #define kMonitorPath @"monitorPath"
 #define kMonitorPathSwitch @"monitorPathSwitch"
 
+typedef enum : NSUInteger {
+    kActiveStateIdle,
+    kActiveStateByUSB,
+    kActiveStateByNetwork
+} kActiveState;
+
 @interface AppDelegate () <NSTextFieldDelegate>
 - (IBAction)trigger:(id)sender;
 - (IBAction)completedAction:(id)sender;
@@ -36,7 +42,7 @@
 @property (weak) IBOutlet NSTextField *urlInput;
 @property (weak) IBOutlet NSButton *monitorPathCheckBox;
 @property (weak) IBOutlet NSTextField *monitorPathInput;
-
+@property(nonatomic, assign) kActiveState activeState;
 @end
 
 @implementation AppDelegate
@@ -77,7 +83,7 @@
     self.statusItem.highlightMode = YES;
     self.statusItem.menu = self.menu;
     self.statusItem.enabled = TRUE;
-    [self setStatusIcon:StatusIconTypeIdle];
+    [self setStatusIcon:StatusIconTypeIdle formServer:kFormIdle];
     self.statusItem.alternateImage = self.statusItem.image;
 }
 
@@ -158,13 +164,27 @@
     CTLog(@"queryItems:%@",queryItems);
 }
 
-- (void)setStatusIcon:(StatusIconType) state
+- (void)setStatusIcon:(StatusIconType) state  formServer:(kFormServer)formServer;
 {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        if(state == StatusIconTypeIdle){
-            self.statusItem.image = [NSImage imageNamed:@"icon_idle"];
-        }else{
-            self.statusItem.image = [NSImage imageNamed:@"icon_active"];
+        if (self.activeState == kActiveStateByNetwork
+            && formServer != kFormNetwork) {
+            return;
+        } else if (self.activeState == kActiveStateByUSB
+                   && formServer != kFormUSB) {
+            return;
+        }
+        
+        if(state == StatusIconTypeIdle) {
+            self.statusItem. image = [NSImage imageNamed:@"icon_idle"];
+            self.activeState = kActiveStateIdle;
+        } else {
+            self.statusItem.image =[NSImage imageNamed:@"icon_active"];
+            if (formServer == kFormNetwork) {
+                self.activeState = kActiveStateByNetwork;
+            } else {
+                self.activeState = kActiveStateByUSB;
+            }
         }
     });
 }

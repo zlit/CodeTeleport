@@ -169,16 +169,46 @@
         [self.builder setArg:[args objectAtIndex:++argIndex]
                   toProperty:@"productName"
                  isDirectory:NO];
+        
+        {
+            NSInteger index = ++argIndex;
+            if ([args count] < index) {
+                NSString *pathStr = [args objectAtIndex:index];
+                if(pathStr.length>0){
+                    NSMutableArray *pathArray = [NSMutableArray array];
+                    NSArray *splitArray = [pathStr componentsSeparatedByString:@","];
+                    for (NSString *tempPath in splitArray){
+                        NSURL *candidateURL = [NSURL fileURLWithPath:tempPath];
+                        if (candidateURL && candidateURL.scheme){
+                            [pathArray addObject:tempPath];
+                        }
+                    }
+                    if([pathArray count]>0){
+                        self.builder.localPodProjectPaths = pathArray;
+                    }
+                }
+            }
+        }
     }
     return [self.builder checkConfigValid];
 }
 
 - (void)startWatcher
 {
+    NSMutableArray *paths = [NSMutableArray array];
+    
+    if (self.builder.projectPath) {
+        [paths addObject:self.builder.projectPath];
+    }
+    
+    if ([self.builder.localPodProjectPaths count] > 0) {
+        [paths addObjectsFromArray:self.builder.localPodProjectPaths];
+    }
+    
     __weak CTProcessor *weakSelf = self;
-    CTLog(@"start Watching : %@",self.builder.projectPath)
-    _fileWatcher = [[FileWatcher alloc] initWithRoot:self.builder.projectPath
-                                              plugin:^(NSArray *changed) {
+    CTLog(@"start Watching : %@",paths)
+    _fileWatcher = [[FileWatcher alloc] initWithRoots:paths
+                                               plugin:^(NSArray *changed) {
                                                   if ([changed count] > 0) {
                                                       [weakSelf.builder addModifyFilePaths:changed];
                                                   }

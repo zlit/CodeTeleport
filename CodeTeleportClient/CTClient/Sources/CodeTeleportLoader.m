@@ -47,7 +47,7 @@ static void *dylibHandle;
     }
     
     if (classCount == 0) {
-        *error = CTError(@"objc_copyClassNamesForImage failed");
+        *error = CTError(@"Inject classes not found, Maybe inject category, please try to see if it works as expected");
         return nil;
     }
     

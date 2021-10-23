@@ -32,6 +32,7 @@ typedef void(^BuildFailedBlock)(CTBuilder *builder,NSString* msg);
 @property(nonatomic,copy) NSString* frameworkFloderPath;
 @property(nonatomic,copy) NSString* excutablePath;
 @property(nonatomic,copy) NSString* productName;
+@property(nonatomic,copy) NSArray* localPodProjectPaths;
 
 @property(nonatomic,copy) BuildCompletedBlock buildCompletedBlock;
 @property(nonatomic,copy) BuildFailedBlock buildFailedBlock;
