@@ -48,6 +48,10 @@ projects.each do|project|
 
         script_phase.name = script_phase_name
         script_phase.shell_script = <<-EOS
+if [[ $CONFIGURATION == "Debug" ]]; then
+
+echo CONFIGURATION:$CONFIGURATION
+
 tmp_path=/tmp/com.zhaolei.CodeTeleport
 assets_path=$tmp_path/CodeTeleport
 ct_client_dylib_name=CTClient
@@ -102,7 +106,7 @@ cp -rf $ct_client_dylib_path $TARGET_APP_PATH/CodeTeleport
 
 if [[ $PLATFORM_NAME != "iphonesimulator" ]]; then
     echo "Code Signing $TARGET_APP_PATH/CodeTeleport/$ct_client_dylib_name"
-    /usr/bin/codesign --force --sign "$EXPANDED_CODE_SIGN_IDENTITER" "$TARGET_APP_PATH/CodeTeleport/$ct_client_dylib_name"
+    /usr/bin/codesign --force --sign "$EXPANDED_CODE_SIGN_IDENTITY" "$TARGET_APP_PATH/CodeTeleport/$ct_client_dylib_name"
 fi
 
 $optool_path install -c load -p "@executable_path/CodeTeleport/$ct_client_dylib_name" -t "$EXECUTABLE_PATH"
@@ -125,6 +129,7 @@ fi
 
 echo "open $ct_app_path"
 open $ct_app_path
+fi
         EOS
         script_phase.show_env_vars_in_log = "0"
     end

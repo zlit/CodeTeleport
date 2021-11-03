@@ -75,15 +75,15 @@ static int kThreadIndex = 1;
 
 - (void)saveCompileCommandCache
 {
-    if ([[self.compileCommandTemplateCache allKeys] count] > 0) {
-        [[NSUserDefaults standardUserDefaults] setObject:self.compileCommandTemplateCache
-                                                  forKey:[self commandTemplateKey]];
-    }
-    
-    if ([[self.compileCommandCache allKeys] count] > 0) {
-        [[NSUserDefaults standardUserDefaults] setObject:self.compileCommandCache
-                                                  forKey:[self compileCommandCacheKey]];
-    }
+//    if ([[self.compileCommandTemplateCache allKeys] count] > 0) {
+//        [[NSUserDefaults standardUserDefaults] setObject:self.compileCommandTemplateCache
+//                                                  forKey:[self commandTemplateKey]];
+//    }
+//
+//    if ([[self.compileCommandCache allKeys] count] > 0) {
+//        [[NSUserDefaults standardUserDefaults] setObject:self.compileCommandCache
+//                                                  forKey:[self compileCommandCacheKey]];
+//    }
 }
 
 - (void)setArg:(NSString *)arg
@@ -107,17 +107,17 @@ static int kThreadIndex = 1;
 - (void)setEviromentArgsComplete
 {
     //load compileCommandTemplate and compileCommandCache
-    NSDictionary *loacTemplateDict = [[NSUserDefaults standardUserDefaults] dictionaryForKey:[self commandTemplateKey]];
-    if (loacTemplateDict != nil
-        && [[loacTemplateDict allKeys] count] > 0) {
-        [self.compileCommandTemplateCache addEntriesFromDictionary:loacTemplateDict];
-    }
-    
-    NSDictionary *loacCommandCacheDict = [[NSUserDefaults standardUserDefaults] dictionaryForKey:[self compileCommandCacheKey]];
-    if (loacCommandCacheDict != nil
-        && [[loacCommandCacheDict allKeys] count] > 0) {
-        [self.compileCommandCache addEntriesFromDictionary:loacCommandCacheDict];
-    }
+//    NSDictionary *loacTemplateDict = [[NSUserDefaults standardUserDefaults] dictionaryForKey:[self commandTemplateKey]];
+//    if (loacTemplateDict != nil
+//        && [[loacTemplateDict allKeys] count] > 0) {
+//        [self.compileCommandTemplateCache addEntriesFromDictionary:loacTemplateDict];
+//    }
+//    
+//    NSDictionary *loacCommandCacheDict = [[NSUserDefaults standardUserDefaults] dictionaryForKey:[self compileCommandCacheKey]];
+//    if (loacCommandCacheDict != nil
+//        && [[loacCommandCacheDict allKeys] count] > 0) {
+//        [self.compileCommandCache addEntriesFromDictionary:loacCommandCacheDict];
+//    }
 }
 
 - (BOOL)checkConfigValid
