@@ -99,6 +99,10 @@ if __name__ == "__main__":
             splitArray = tmp_line.split(' -o ')
             compile_command = splitArray[0]
 
+    if len(compile_command) == 0:
+        print "compile_command not found."
+        sys.exit()
+
     if '-fvisibility=hidden' in compile_command:
         print "compile_command has -fvisibility=hidden,replace it with blank"
         compile_command = compile_command.replace('-fvisibility=hidden','')
