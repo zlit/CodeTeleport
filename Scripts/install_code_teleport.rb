@@ -64,9 +64,30 @@ if [ ! -d $tmp_path ]; then
 fi
 
 #1.find local_pod_project_paths
-#TODO
+local_pod_project_paths=""
+array=($LIBRARY_SEARCH_PATHS)
+for LIBRARY_PATH in ${array[@]}
+do
+    stripped_library_path=$(echo "$LIBRARY_PATH" | tr -d "\\\"")
+    for folder in `ls -1 $SRCROOT/../`
+    do
+        if [[ -d $SRCROOT/../$foler ]]; then
+            for secondary_folder in `ls -1 $SRCROOT/../$folder`
+            do
+                if [[ $secondary_folder == *"xcodeproj" ]]; then
+                    if [[ $stripped_library_path == *"${secondary_folder%.*}" ]]; then
+                        local_pod_project_paths="$SRCROOT/../$folder,$local_pod_project_paths"
+                        break
+                    fi
+                fi
+            done
+        fi
+    done
+done
 
-#2.save env vars and local_pod_project_paths
+echo "local_pod_project_paths : $local_pod_project_paths"
+
+#2.save env vars
 
 echo '$SRCROOT : ' $SRCROOT
 echo '$DEVELOPER_DIR : ' $DEVELOPER_DIR
@@ -80,7 +101,7 @@ echo '$FRAMEWORKS_FOLDER_PATH : ' $FRAMEWORKS_FOLDER_PATH
 echo '$EXECUTABLE_PATH : ' $EXECUTABLE_PATH
 echo '$PRODUCT_NAME : ' $PRODUCT_NAME
 
-printf "$SRCROOT\#$DEVELOPER_DIR\#$BUILD_DIR\#$DT_TOOLCHAIN_DIR\#$SDKROOT\#$TARGET_DEVICE_OS_VERSION\#$ARCHS\#$TARGET_DEVICE_IDENTIFIER\#$EXPANDED_CODE_SIGN_IDENTITY\#$CODESIGNING_FOLDER_PATH\#$FRAMEWORKS_FOLDER_PATH\#$EXECUTABLE_PATH\#$PRODUCT_NAME#" > $tmp_path/build_enviroment.configs
+printf "$SRCROOT\#$DEVELOPER_DIR\#$BUILD_DIR\#$DT_TOOLCHAIN_DIR\#$SDKROOT\#$TARGET_DEVICE_OS_VERSION\#$ARCHS\#$TARGET_DEVICE_IDENTIFIER\#$EXPANDED_CODE_SIGN_IDENTITY\#$CODESIGNING_FOLDER_PATH\#$FRAMEWORKS_FOLDER_PATH\#$EXECUTABLE_PATH\#$PRODUCT_NAME\#$local_pod_project_paths" > $tmp_path/build_enviroment.configs
 
 #3.download assets
 
