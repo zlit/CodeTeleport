@@ -65,7 +65,7 @@ fi
 
 #1.find local_pod_project_paths
 local_pod_project_paths=""
-array=($LIBRARY_SEARCH_PATHS)
+array=($FRAMEWORK_SEARCH_PATHS)
 for LIBRARY_PATH in ${array[@]}
 do
     stripped_library_path=$(echo "$LIBRARY_PATH" | tr -d "\\\"")
